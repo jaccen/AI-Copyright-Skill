@@ -1,11 +1,9 @@
 ---
 name: AI-Copyright-Skill
-description: "面向AI研发与AI行业应用的知识产权文件生成：从AI项目代码/论文/设计文档出发，生成发明专利申请文件（权利要求书+说明书+摘要）、软件著作权登记材料（说明书+源代码文档），或技术交底书，支持直接输出Word(.docx)和简介PPT(.pptx)。专利路径内置技术交底书中间产物。内置7大AI领域22细分方向可专利性判定、11类权利要求模板、6类论文-专利映射、AI项目自动识别（含3D视觉/生成式AI/具身智能/RAG）、脱敏、查新、量化自检。| Generate IP documents for AI R&D and AI industry applications: patent application files, software copyright materials, or technical disclosure reports from AI project code/papers/design docs. Direct Word(.docx) and briefing PPT(.pptx) output. Built-in patent disclosure as intermediate deliverable in patent path. 7 AI domains x 22 sub-directions, 11 claim templates, paper-to-patent mapping, auto-detection (incl. 3D vision/generative AI/embodied AI/RAG), desensitization, prior-art search, quantitative self-check."
-name_cn: AI知识产权生成
-description_cn: 从AI项目代码/论文/设计文档生成专利申请文件、软著登记材料或技术交底书，覆盖7大AI领域22细分方向11类权利要求模板，支持直接输出Word和简介PPT，专利路径含交底书中间产物
+description: "AI-native IP skill: generate patent applications, software copyright materials, or technical disclosures from AI project code/papers/docs, with direct Word and PPT output. Covers 7 AI domains, 11 claim templates, patentability check, desensitization, prior-art search, and self-check."
 version: "2.0.0"
 author: jaccen
-tags: ["patent", "software-copyright", "ip", "ai", "intellectual-property", "docx", "pptx", "专利", "软著", "知识产权", "3d-vision", "generative-ai", "embodied-ai", "rag", "ai-watermark"]
+tags: ["patent", "software-copyright", "ip", "ai", "intellectual-property", "docx", "pptx", "3d-vision", "generative-ai", "embodied-ai", "rag", "ai-watermark"]
 ---
 
 # AI知识产权文件生成
