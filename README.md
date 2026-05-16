@@ -1,69 +1,78 @@
-# ai-ip-skill
+# AI-Copyright-Skill
 
-**The First AI-Native Intellectual Property Skill for Agent Workflows**
+**The First AI-Native Intellectual Property Skill for Agent Workflows -- with Direct Word + PPT Output**
 
-An Agent Skill that generates Chinese patent application documents, software copyright registration materials, and technical disclosure reports from AI project code, research papers, and design docs — with domain-specific rules baked in.
+An Agent Skill that generates Chinese patent application documents, software copyright registration materials, and technical disclosure reports from AI project code, research papers, and design docs -- with domain-specific rules baked in, and outputs ready-to-use `.docx` + `.pptx` files by default. The patent path includes a built-in technical disclosure intermediate deliverable for handoff to patent agents.
 
 [中文文档](./README_CN.md)
 
 ## Why This Skill Exists
 
-Existing patent/copyright skills are all **generic** — same templates for any domain. AI has unique IP challenges:
+Existing patent/copyright skills are all **generic** -- same templates for any domain. AI has unique IP challenges:
 
 - **Patentability**: Is your algorithm even patentable under CNIPA guidelines?
 - **Claim drafting**: How to write method+system+storage-medium triple claims for a neural network?
 - **Desensitization**: How to replace "A100", "PyTorch", "7B parameters" with patent-safe language?
 - **Software copyright**: Which source files to include? How to handle GPU/CUDA requirements?
 - **Paper-to-patent mapping**: How to turn ablation studies into dependent claims?
+- **Output format**: Can I get a Word file directly instead of Markdown?
+- **Internal communication**: How to brief management or patent agents quickly?
 
 This skill answers all of them.
 
 ## Features
 
-### Three Output Paths
+### Three Output Paths + Direct Word & PPT Output
 
-| Path | Deliverables | Target |
-|------|-------------|--------|
-| Patent | Claims + Specification + Abstract | CNIPA (China National Intellectual Property Administration) |
-| Software Copyright | Software Manual + Source Code Doc | CPCC (China Copyright Protection Center) |
-| Technical Disclosure | Full disclosure document | Patent agents / attorneys |
+| Path | Deliverables | Default Format |
+|------|-------------|----------------|
+| Patent | Disclosure + Claims + Specification + Abstract + Briefing PPT | `.docx` x2 (disclosure + patent) + `.pptx` |
+| Software Copyright | Software Manual + Source Code Doc | 2 `.docx` files |
+| Technical Disclosure | Full disclosure document | Single `.docx` file |
 
 ### AI-Domain Specific Capabilities
 
-- **Patentability Pre-Assessment** (Phase 0): 3-factor test — technical problem, technical means, technical effect
+- **Patentability Pre-Assessment** (Phase 0): 3-factor test -- technical problem, technical means, technical effect
 - **6-Type Claim Templates**: Model architecture / Training method / Inference optimization / Data processing / Multi-modal fusion / Agent system
 - **Patent Layout Advisory**: Single application vs. divisional filing decision tree
 - **6-Type Desensitization Table**: Dataset names, parameter counts, hardware models, framework names, training costs, API names
-- **AI Project Auto-Detection**: Decision tree based on entry files (train.py → Training, serve.py → API Service, ...)
-- **Source Code Priority**: model.py → train.py → inference.py → dataset.py → loss.py
-- **Paper-to-Patent Mapping**: Research Problem → Technical Problem, Contribution → Technical Solution, Ablation → Dependent Claims
+- **AI Project Auto-Detection**: Decision tree based on entry files (train.py -> Training, serve.py -> API Service, ...)
+- **Source Code Priority**: model.py -> train.py -> inference.py -> dataset.py -> loss.py
+- **Paper-to-Patent Mapping**: Research Problem -> Technical Problem, Contribution -> Technical Solution, Ablation -> Dependent Claims
 - **100-Point Quality Scoring**: Quantitative self-check for each output path
+- **Technical Disclosure as Intermediate** (C1.3): Auto-generated from technical key points + search results, for handoff to patent agents
+- **Direct Word (.docx) Output** (Phase F): Professional patent document formatting with docx-js -- Song Ti body, Hei Ti headings, page headers/footers, numbered claims
+- **Briefing PPT (.pptx) Output** (Phase G): 5-8 slide executive briefing -- background, innovation, architecture, results comparison, filing plan; auto-generated from disclosure + patent data
 
 ### User Experience
 
 - **Confirmation Gates**: Pause at each phase boundary for user review
 - **Iterative Correction**: Modify specific sections without re-running the entire pipeline
 - **Quantitative Self-Check**: Auto-score and auto-fix when score < 80
-- **Slash Commands**: `/ai-ip` or `/AI知产`
+- **Slash Commands**: `/ai-copyright` or `/AI知产`
+- **Format Options**: `docx` (default) / `md` / `both`
+- **PPT Option**: Auto-generated for patent path; `--ppt` flag for other paths
 
 ## Workflow
 
 ```
 Phase 0  Patentability Pre-Assessment (patent path only)
-Phase A  Requirement Diagnosis → path selection + boundary
-Phase B  Project Analysis → auto-detect AI project type + extract key points
+Phase A  Requirement Diagnosis -> path selection + boundary
+Phase B  Project Analysis -> auto-detect AI project type + extract key points
 Phase C  Generation (branch by path)
-  ├── C1  Patent (search → layout → claims → specification → abstract → self-check)
-  ├── C2  Software Copyright (manual → source code doc → self-check)
-  └── C3  Technical Disclosure (mapping → drafting → self-check)
+  ├── C1  Patent (search -> layout -> disclosure -> claims -> specification -> abstract -> self-check)
+  ├── C2  Software Copyright (manual -> source code doc -> self-check)
+  └── C3  Technical Disclosure (mapping -> drafting -> self-check)
 Phase D  Confirmation Gate (user review at each phase end)
 Phase E  Iterative Correction (targeted fix, no full re-run)
+Phase F  Word Document Output (automatic, docx-js workflow)
+Phase G  Briefing PPT Output (patent path default; others optional)
 ```
 
 ## File Structure
 
 ```
-ai-ip-skill/
+AI-Copyright-Skill/
 ├── SKILL.md                              # Main skill file (agent entry point)
 ├── README.md                             # This file
 ├── README_CN.md                          # Chinese documentation
@@ -78,20 +87,20 @@ ai-ip-skill/
 
 ### TeleAI Super Agent / OpenClaw
 
-Copy the entire `ai-ip-skill/` directory to your skills folder:
+Copy the entire `AI-Copyright-Skill/` directory to your skills folder:
 
 ```bash
 # TeleAI Super Agent
-cp -r ai-ip-skill/ ~/.config/teleai-super-agent/skills/ai-ip-skill/
+cp -r AI-Copyright-Skill/ ~/.config/teleai-super-agent/skills/AI-Copyright-Skill/
 
 # OpenClaw / Claude Code
-cp -r ai-ip-skill/ .claude/skills/ai-ip-skill/
+cp -r AI-Copyright-Skill/ .claude/skills/AI-Copyright-Skill/
 ```
 
 ### ClawHub
 
 ```bash
-clawhub install ai-ip-skill
+clawhub install AI-Copyright-Skill
 ```
 
 ## Usage
@@ -103,9 +112,9 @@ Once installed, simply mention patent/copyright-related keywords in your agent c
 - "Help me write a patent for my 3DGS重建方法"
 - "Generate software copyright materials for this project"
 - "Convert my paper into a technical disclosure document"
-- `/ai-ip` or `/AI知产`
+- `/ai-copyright` or `/AI知产`
 
-### Patent Path Example
+### Patent Path Example (with Word + PPT output)
 
 ```
 User: 帮我基于我的3DGS项目写一份发明专利申请
@@ -116,30 +125,30 @@ Agent (Phase 0): Running patentability assessment...
   ✓ Technical effect: "Inference latency reduced from 120ms to 35ms"
   → Patentability: PASS
 
-Agent (Phase A): Confirming requirements...
-  Path: Patent application
-  AI project type: Model architecture innovation
-  ...
-
-Agent (Phase B): Scanning project...
-  Detected entry: train.py → Training class
-  Core innovation: Adaptive density control module in gaussian_renderer.py
-  Key points extracted: [5 items]
-
 Agent (Phase C1): Generating patent documents...
   C1.1 Prior art search: Found 3 related patents, differentiated
   C1.2 Layout advice: Single application (architecture+training coupled)
-  C1.3 Claims: 1 independent (method) + 5 dependent + 1 independent (system) + 1 storage media
-  C1.4 Specification: 5 chapters, 3 embodiments
-  C1.5 Abstract: 280 characters
-  C1.6 Self-check: 92/100 → PASS
+  C1.3 Technical disclosure: Generated (for patent agent handoff)
+  C1.4 Claims: 1 independent (method) + 5 dependent + 1 independent (system) + 1 storage media
+  C1.5 Specification: 5 chapters, 3 embodiments
+  C1.6 Abstract: 280 characters
+  C1.7 Self-check: 92/100 → PASS
+
+Agent (Phase F): Generating Word documents...
+  → 3dgs-adaptive-density_disclosure.docx (technical disclosure)
+  → 3dgs-adaptive-density.docx (cover + claims + specification + abstract)
+
+Agent (Phase G): Generating briefing PPT...
+  → 3dgs-adaptive-density_简介.pptx (8 slides)
 
 Output: outputs/3dgs-adaptive-density/
-  ├── patent/
-  │   ├── 3dgs-adaptive-density_claims.md
-  │   ├── 3dgs-adaptive-density_specification.md
-  │   ├── 3dgs-adaptive-density_abstract.md
-  │   └── 3dgs-adaptive-density_full.md
+  └── patent/
+      ├── 3dgs-adaptive-density_disclosure.docx  ← For patent agent
+      ├── 3dgs-adaptive-density.docx             ← Formal application
+      ├── 3dgs-adaptive-density_简介.pptx        ← Management briefing
+      ├── 3dgs-adaptive-density_claims.md
+      ├── 3dgs-adaptive-density_specification.md
+      └── 3dgs-adaptive-density_abstract.md
 ```
 
 ### Software Copyright Path Example
@@ -154,9 +163,13 @@ Agent (Phase B): Auto-detecting project type...
 
 Agent (Phase C2): Generating software copyright materials...
   C2.1 Manual: 12 pages, 8 screenshots, AI-capability description included
-  C2.2 Source code: model.py(340 lines) + train.py(280 lines) + inference.py(195 lines) + ...
+  C2.2 Source code: model.py(340 lines) + train.py(280 lines) + ...
       Total: 1560 lines → All submitted (< 3000 lines)
   C2.3 Self-check: 88/100 → PASS
+
+Agent (Phase F): Generating Word documents...
+  → xxx_软件说明书.docx
+  → xxx_源代码文档.docx
 ```
 
 ### Technical Disclosure Path Example
@@ -164,22 +177,23 @@ Agent (Phase C2): Generating software copyright materials...
 ```
 User: 把我这篇论文转成技术交底书
 
-Agent (Phase C3): Mapping paper to disclosure...
+Agent (Phase C3 → Phase F): Mapping paper→disclosure→Word...
   Research Problem → Technical Problem ✓
   Contribution → Technical Solution ✓
-  Method Modules → Implementation Units ✓
-  Algorithm Flow → Implementation Procedure ✓
-  Experimental Outcome → Technical Effect ✓
   Ablation Study → Alternative Embodiments ✓
+  → xxx_disclosure.docx generated
 ```
 
 ## Comparison with Existing Skills
 
-| Feature | ai-ip-skill | Fokkyp/SoftwareCopyright-Skill (3k stars) | patent-disclosure-skill | patent-software-ip (v1.0) |
-|---------|:-----------:|:------------------------------------------:|:-----------------------:|:--------------------------:|
+| Feature | AI-Copyright-Skill | Fokkyp/SoftwareCopyright-Skill (3k stars) | patent-disclosure-skill | patent-software-ip (v1.0) |
+|---------|:-----------------:|:------------------------------------------:|:-----------------------:|:--------------------------:|
 | Patent application | Full | -- | -- | Full |
 | Software copyright | Full | Full | -- | Full |
 | Technical disclosure | Full | -- | Full | -- |
+| **Disclosure as patent intermediate** | **Yes** | -- | -- | -- |
+| **Direct Word (.docx) output** | **Yes** | -- | -- | -- |
+| **Briefing PPT (.pptx) output** | **Yes** | -- | -- | -- |
 | AI patentability check | Built-in | -- | -- | -- |
 | AI claim templates (6 types) | Built-in | -- | -- | -- |
 | AI project auto-detection | Built-in | -- | -- | -- |
@@ -201,19 +215,19 @@ Agent (Phase C3): Mapping paper to disclosure...
 
 ## License
 
-MIT License — see [LICENSE](./LICENSE)
+MIT License -- see [LICENSE](./LICENSE)
 
 ## Author
 
-jaccen — [GitHub](https://github.com/jaccen) | [Awesome-Gaussian-Skills](https://github.com/jaccen/Awesome-Gaussian-Skills)
+jaccen -- [GitHub](https://github.com/jaccen) | [AI-Copyright-Skill](https://github.com/jaccen/AI-Copyright-Skill) | [Awesome-Gaussian-Skills](https://github.com/jaccen/Awesome-Gaussian-Skills)
 
 ## Acknowledgments
 
 This skill was designed by analyzing and learning from these excellent projects:
 
-- [Fokkyp/SoftwareCopyright-Skill](https://github.com/Fokkyp/SoftwareCopyright-Skill) — Confirmation gate interaction design
-- [patent-disclosure-skill](https://clawhub.ai/) — Prompt molecule architecture + disclosure workflow
-- [na57/chinese-copyright-application-skill](https://github.com/na57/chinese-copyright-application-skill) — AI project type detection
-- [Earl000333/paperforge](https://github.com/Earl000333/paperforge) — Paper-to-patent mapping methodology
-- [hapi-ds/mPAPA](https://github.com/hapi-ds/mPAPA) — Structured multi-step workflow
-- [IGTA-Tech/provisional-patent-skills](https://github.com/IGTA-Tech/provisional-patent-skills) — 100-point quality scoring
+- [Fokkyp/SoftwareCopyright-Skill](https://github.com/Fokkyp/SoftwareCopyright-Skill) -- Confirmation gate interaction design
+- [patent-disclosure-skill](https://clawhub.ai/) -- Prompt molecule architecture + disclosure workflow
+- [na57/chinese-copyright-application-skill](https://github.com/na57/chinese-copyright-application-skill) -- AI project type detection
+- [Earl000333/paperforge](https://github.com/Earl000333/paperforge) -- Paper-to-patent mapping methodology
+- [hapi-ds/mPAPA](https://github.com/hapi-ds/mPAPA) -- Structured multi-step workflow
+- [IGTA-Tech/provisional-patent-skills](https://github.com/IGTA-Tech/provisional-patent-skills) -- 100-point quality scoring
