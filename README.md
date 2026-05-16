@@ -1,3 +1,14 @@
+---
+AIGC:
+  ContentProducer: '001191110102MAD55U9H0F10002'
+  ContentPropagator: '001191110102MAD55U9H0F10002'
+  Label: '1'
+  ProduceID: '01eec431-7919-4d7f-bd20-4cad8d39ce2d'
+  PropagateID: '01eec431-7919-4d7f-bd20-4cad8d39ce2d'
+  ReservedCode1: 'b05b2e24-106b-491c-9cdd-42f386b2942f'
+  ReservedCode2: 'b05b2e24-106b-491c-9cdd-42f386b2942f'
+---
+
 # AI-Copyright-Skill
 
 **The First AI-Native Intellectual Property Skill for Agent Workflows -- with Direct Word + PPT Output**
@@ -17,6 +28,7 @@ Existing patent/copyright skills are all **generic** -- same templates for any d
 - **Paper-to-patent mapping**: How to turn ablation studies into dependent claims?
 - **Output format**: Can I get a Word file directly instead of Markdown?
 - **Internal communication**: How to brief management or patent agents quickly?
+- **3D vision / Generative AI / Embodied AI**: Domain-specific claim structures and patentability traps?
 
 This skill answers all of them.
 
@@ -30,19 +42,35 @@ This skill answers all of them.
 | Software Copyright | Software Manual + Source Code Doc | 2 `.docx` files |
 | Technical Disclosure | Full disclosure document | Single `.docx` file |
 
+### 7 AI Domains x 22 Sub-Directions Coverage
+
+| Domain | Sub-Directions | Claim Template |
+|--------|---------------|----------------|
+| **Perception AI** | 2D CV · 3D Vision & Graphics · Audio/Video · Sensor Fusion | 2.1 Architecture · 2.2 3D Vision |
+| **Cognitive & Language** | LLM · Multimodal LLM · RAG · Knowledge Graph | 2.3 Training · 2.4 MLLM · 2.5 RAG |
+| **Generative AI** | Diffusion & Controlled Gen · AIGC Watermark · Style Transfer | 2.6 Diffusion |
+| **Decision & Interaction** | Agent · Embodied AI · Reinforcement Learning | 2.7 Agent · 2.8 VLA |
+| **AI Engineering** | Training/Fine-tuning · Inference Optimization · Data Engineering · Edge/IoT | 2.9 Inference · 2.10 Data |
+| **AI Safety & Governance** | Adversarial Defense · Watermark & Traceability · Federated Learning · Alignment | 2.11 Watermark |
+| **Industry Applications** | Autonomous Driving · Industry QC · Healthcare · Finance · AI4Science · Digital Content | Domain-adapted |
+
 ### AI-Domain Specific Capabilities
 
-- **Patentability Pre-Assessment** (Phase 0): 3-factor test -- technical problem, technical means, technical effect
-- **6-Type Claim Templates**: Model architecture / Training method / Inference optimization / Data processing / Multi-modal fusion / Agent system
-- **Patent Layout Advisory**: Single application vs. divisional filing decision tree
-- **6-Type Desensitization Table**: Dataset names, parameter counts, hardware models, framework names, training costs, API names
-- **AI Project Auto-Detection**: Decision tree based on entry files (train.py -> Training, serve.py -> API Service, ...)
-- **Source Code Priority**: model.py -> train.py -> inference.py -> dataset.py -> loss.py
-- **Paper-to-Patent Mapping**: Research Problem -> Technical Problem, Contribution -> Technical Solution, Ablation -> Dependent Claims
+- **Patentability Pre-Assessment** (Phase 0): 3-factor test + domain risk levels for 8 high-risk areas
+- **11-Type Claim Templates**: Architecture / 3D Vision / Training / MLLM / RAG / Diffusion / Agent / Embodied AI / Inference / Data / Watermark
+- **Domain-Specific Dependent Claim Strategies**: 5-layer general + 5 domain-specific expansion tables
+- **Patent Layout Advisory**: Single vs. divisional filing; special rules for 3D visions and Embodied AI
+- **6+14+4 Desensitization Rules**: 6 general + 14 industry-specific + 4 3DGS/NeRF-specific replacements
+- **AI Project Auto-Detection**: Decision tree covering 11 project types + 6 industry categories
+- **Source Code Priority**: 12-level priority with domain-specific mandatory files (3D vision, generative AI, embodied AI, RAG)
+- **Paper-to-Patent Mapping**: 6-type general + 10 domain-specific mapping rules
+- **4 Software Manual Templates**: General / 3D Vision / Generative AI / Embodied AI
+- **13-Type AI System Figure Requirements**: From DL inference to AI watermark systems
+- **6-Group CPC/IPC Classification**: 30+ codes across AI core / perception / language / decision / safety / industry
 - **100-Point Quality Scoring**: Quantitative self-check for each output path
-- **Technical Disclosure as Intermediate** (C1.3): Auto-generated from technical key points + search results, for handoff to patent agents
-- **Direct Word (.docx) Output** (Phase F): Professional patent document formatting with docx-js -- Song Ti body, Hei Ti headings, page headers/footers, numbered claims
-- **Briefing PPT (.pptx) Output** (Phase G): 5-8 slide executive briefing -- background, innovation, architecture, results comparison, filing plan; auto-generated from disclosure + patent data
+- **Technical Disclosure as Intermediate** (C1.3): Auto-generated from technical key points + search results
+- **Direct Word (.docx) Output** (Phase F): Professional patent document formatting with docx-js
+- **Briefing PPT (.pptx) Output** (Phase G): 5-8 slide executive briefing with AI domain tag
 
 ### User Experience
 
@@ -56,13 +84,13 @@ This skill answers all of them.
 ## Workflow
 
 ```
-Phase 0  Patentability Pre-Assessment (patent path only)
-Phase A  Requirement Diagnosis -> path selection + boundary
-Phase B  Project Analysis -> auto-detect AI project type + extract key points
+Phase 0  Patentability Pre-Assessment + Domain Risk Detection (patent path only)
+Phase A  Requirement Diagnosis -> path selection + domain attribution + risk level
+Phase B  Project Analysis -> auto-detect AI project type (11 types) + extract key points
 Phase C  Generation (branch by path)
-  ├── C1  Patent (search -> layout -> disclosure -> claims -> specification -> abstract -> self-check)
-  ├── C2  Software Copyright (manual -> source code doc -> self-check)
-  └── C3  Technical Disclosure (mapping -> drafting -> self-check)
+  ├── C1  Patent (search -> layout -> disclosure -> claims (11 templates) -> specification -> abstract -> self-check)
+  ├── C2  Software Copyright (manual (4 templates) -> source code doc -> self-check)
+  └── C3  Technical Disclosure (general + domain-specific mapping -> drafting -> self-check)
 Phase D  Confirmation Gate (user review at each phase end)
 Phase E  Iterative Correction (targeted fix, no full re-run)
 Phase F  Word Document Output (automatic, docx-js workflow)
@@ -78,9 +106,9 @@ AI-Copyright-Skill/
 ├── README_CN.md                          # Chinese documentation
 ├── LICENSE                               # MIT License
 └── references/                           # Domain knowledge base
-    ├── ai-patent-special.md              # Patentability + layout + mapping + desensitization + CPC codes
-    ├── ai-software-copyright-guide.md    # Project detection + source priority + manual template + pitfalls
-    └── ai-patent-claims-guide.md         # 6-type claim templates + 5-layer dependent claim strategy
+    ├── ai-patent-special.md              # Patentability + domain risks + layout + mapping + desensitization + CPC codes (7 sections)
+    ├── ai-software-copyright-guide.md    # Project detection (11 types) + source priority (12 levels) + 4 manual templates + 10 pitfalls
+    └── ai-patent-claims-guide.md         # 11 claim templates + 5-layer + 5 domain-specific dependent claim strategies
 ```
 
 ## Installation
@@ -109,9 +137,9 @@ clawhub install AI-Copyright-Skill
 
 Once installed, simply mention patent/copyright-related keywords in your agent chat:
 
-- "Help me write a patent for my 3DGS重建方法"
-- "Generate software copyright materials for this project"
-- "Convert my paper into a technical disclosure document"
+- "Help me write a patent for my 3DGS reconstruction method"
+- "Generate software copyright materials for this embodied AI project"
+- "Convert my diffusion model paper into a technical disclosure document"
 - `/ai-copyright` or `/AI知产`
 
 ### Patent Path Example (with Word + PPT output)
@@ -123,14 +151,20 @@ Agent (Phase 0): Running patentability assessment...
   ✓ Technical problem: "Real-time rendering bottleneck in large-scale 3D scene reconstruction"
   ✓ Technical means: "Gaussian splatting with adaptive density control"
   ✓ Technical effect: "Inference latency reduced from 120ms to 35ms"
-  → Patentability: PASS
+  ⚠ Domain risk: MEDIUM (3D vision - ensure rendering formula in claims)
+  → Patentability: PASS (with domain-specific drafting rules applied)
+
+Agent (Phase B): Auto-detecting project type...
+  Entry file: render.py + gaussian.py → 3D Vision (3DGS)
+  Domain: Perception AI > 3D Vision & Graphics
+  Claim template: 2.2 (3D Vision)
 
 Agent (Phase C1): Generating patent documents...
   C1.1 Prior art search: Found 3 related patents, differentiated
-  C1.2 Layout advice: Single application (architecture+training coupled)
+  C1.2 Layout advice: Single application (reconstruction+rendering coupled)
   C1.3 Technical disclosure: Generated (for patent agent handoff)
-  C1.4 Claims: 1 independent (method) + 5 dependent + 1 independent (system) + 1 storage media
-  C1.5 Specification: 5 chapters, 3 embodiments
+  C1.4 Claims: Independent (method, 3D vision 4-stage) + 5 dependent + Independent (system) + storage media
+  C1.5 Specification: 5 chapters, 3 embodiments, 3DGS-specific desensitization applied
   C1.6 Abstract: 280 characters
   C1.7 Self-check: 92/100 → PASS
 
@@ -139,7 +173,7 @@ Agent (Phase F): Generating Word documents...
   → 3dgs-adaptive-density.docx (cover + claims + specification + abstract)
 
 Agent (Phase G): Generating briefing PPT...
-  → 3dgs-adaptive-density_简介.pptx (8 slides)
+  → 3dgs-adaptive-density_简介.pptx (8 slides, domain: Perception AI)
 
 Output: outputs/3dgs-adaptive-density/
   └── patent/
@@ -160,6 +194,7 @@ Agent (Phase B): Auto-detecting project type...
   Entry file: app.py + serve.py → AI Service (Web API)
   Framework: FastAPI + PyTorch
   GPU required: Yes (CUDA 11.8+)
+  Manual template: 3.1 General type
 
 Agent (Phase C2): Generating software copyright materials...
   C2.1 Manual: 12 pages, 8 screenshots, AI-capability description included
@@ -177,28 +212,39 @@ Agent (Phase F): Generating Word documents...
 ```
 User: 把我这篇论文转成技术交底书
 
+Agent (Phase B): Detecting domain...
+  Paper topic: Diffusion model with ControlNet
+  Domain: Generative AI > Diffusion & Controlled Generation
+  Mapping: Domain-specific (noise schedule → claim step, condition injection → sub-claim)
+
 Agent (Phase C3 → Phase F): Mapping paper→disclosure→Word...
   Research Problem → Technical Problem ✓
   Contribution → Technical Solution ✓
   Ablation Study → Alternative Embodiments ✓
+  Diffusion-specific: Noise schedule → dependent claim, ControlNet injection → dependent claim ✓
   → xxx_disclosure.docx generated
 ```
 
 ## Comparison with Existing Skills
 
-| Feature | AI-Copyright-Skill | Fokkyp/SoftwareCopyright-Skill (3k stars) | patent-disclosure-skill | patent-software-ip (v1.0) |
-|---------|:-----------------:|:------------------------------------------:|:-----------------------:|:--------------------------:|
+| Feature | AI-Copyright-Skill v2.0 | Fokkyp/SoftwareCopyright-Skill | patent-disclosure-skill | patent-software-ip (v1.0) |
+|---------|:----------------------:|:------------------------------:|:-----------------------:|:-------------------------:|
 | Patent application | Full | -- | -- | Full |
 | Software copyright | Full | Full | -- | Full |
 | Technical disclosure | Full | -- | Full | -- |
-| **Disclosure as patent intermediate** | **Yes** | -- | -- | -- |
-| **Direct Word (.docx) output** | **Yes** | -- | -- | -- |
-| **Briefing PPT (.pptx) output** | **Yes** | -- | -- | -- |
+| **7 AI domains x 22 sub-directions** | **Yes** | -- | -- | -- |
+| **11 claim templates** | **Yes** | -- | -- | -- |
+| **Domain-dependent claim strategies** | **Yes (5 domains)** | -- | -- | -- |
+| **Domain risk assessment** | **Yes (8 risk areas)** | -- | -- | -- |
+| **13-type figure requirements** | **Yes** | -- | -- | -- |
+| **4 software manual templates** | **Yes** | -- | -- | -- |
+| Disclosure as patent intermediate | Yes | -- | -- | -- |
+| Direct Word (.docx) output | Yes | -- | -- | -- |
+| Briefing PPT (.pptx) output | Yes | -- | -- | -- |
 | AI patentability check | Built-in | -- | -- | -- |
-| AI claim templates (6 types) | Built-in | -- | -- | -- |
-| AI project auto-detection | Built-in | -- | -- | -- |
-| AI desensitization rules | Built-in | -- | -- | Partial |
-| Paper-to-patent mapping | Built-in | -- | Partial | -- |
+| AI project auto-detection | Built-in (11 types) | -- | -- | -- |
+| AI desensitization rules | 6+14+4 rules | -- | -- | Partial |
+| Paper-to-patent mapping | 6-type + 10 domain | -- | Partial | -- |
 | Patent layout advisory | Built-in | -- | -- | -- |
 | Confirmation gates | Yes | Yes | -- | -- |
 | 100-point quality scoring | Yes | -- | -- | -- |
@@ -209,9 +255,28 @@ Agent (Phase C3 → Phase F): Mapping paper→disclosure→Word...
 
 | Reference File | Sections |
 |---------------|----------|
-| `ai-patent-special.md` | Patentability 3-factor test / Single vs. divisional filing / Paper-to-patent 6-type mapping / AI figure requirements / 6-type desensitization table / CPC-IPC classification |
-| `ai-software-copyright-guide.md` | AI project type decision tree / Per-type manual focus / Source file priority / Code desensitization checklist / AI manual template / 5 common pitfalls |
-| `ai-patent-claims-guide.md` | Method+System+Media triple claim principle / 6-type AI claim templates (architecture/training/inference/data/multimodal/agent) / 5-layer dependent claim expansion |
+| `ai-patent-special.md` | §1 Patentability 3-factor + 8 domain risks / §2 Layout strategy (incl. 3D & embodied) / §3 6-type + 10 domain mapping / §4 13-type figure requirements / §5 6+14+4 desensitization / §6 6-group CPC/IPC / §7 7-domain quick reference |
+| `ai-software-copyright-guide.md` | §1 11-type decision tree + 6 industry detection / §2 12-level source priority + desensitization / §3 4 manual templates (general/3D/gen-AI/embodied) / §4 10 common pitfalls |
+| `ai-patent-claims-guide.md` | §1 Triple claim principle / §2 11 claim templates (architecture/3D-vision/training/MLLM/RAG/diffusion/agent/embodied/inference/data/watermark) / §3 5-layer + 5 domain-dependent claim expansion |
+
+## Version History
+
+### v2.0.0 (2026-05)
+
+- Expanded from 6 claim types to **11 claim templates** covering 7 AI domains x 22 sub-directions
+- Added **domain risk assessment** with 8 high/medium-risk areas and drafting countermeasures
+- Added 5 new claim templates: 3D Vision, Diffusion/Generative AI, RAG, Embodied AI (VLA), AI Watermark
+- Added **5 domain-specific dependent claim expansion strategies**
+- Expanded desensitization from 6 to **6+14+4 rules** (general + industry + 3D-specific)
+- Expanded project detection from 6 to **11 types** + **6 industry categories**
+- Added **4 software manual templates** (general/3D-vision/generative-AI/embodied-AI)
+- Expanded figure requirements from 5 to **13 AI system types**
+- Expanded CPC/IPC from 6 to **6 groups / 30+ codes**
+- Added §7 domain quick reference table to ai-patent-special.md
+
+### v1.2.0
+
+- Initial public release with 6 claim templates and 3 patent paths
 
 ## License
 
@@ -231,3 +296,5 @@ This skill was designed by analyzing and learning from these excellent projects:
 - [Earl000333/paperforge](https://github.com/Earl000333/paperforge) -- Paper-to-patent mapping methodology
 - [hapi-ds/mPAPA](https://github.com/hapi-ds/mPAPA) -- Structured multi-step workflow
 - [IGTA-Tech/provisional-patent-skills](https://github.com/IGTA-Tech/provisional-patent-skills) -- 100-point quality scoring
+
+> AI生成
