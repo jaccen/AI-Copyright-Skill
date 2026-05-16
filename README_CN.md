@@ -1,14 +1,3 @@
----
-AIGC:
-  ContentProducer: '001191110102MAD55U9H0F10002'
-  ContentPropagator: '001191110102MAD55U9H0F10002'
-  Label: '1'
-  ProduceID: 'aa96c903-dad6-485f-8823-f2be6cd1a490'
-  PropagateID: 'aa96c903-dad6-485f-8823-f2be6cd1a490'
-  ReservedCode1: '620997b4-9049-4c1d-a2f3-5e1ad83e59ef'
-  ReservedCode2: '620997b4-9049-4c1d-a2f3-5e1ad83e59ef'
----
-
 # AI-Copyright-Skill
 
 **首个面向AI领域的Agent知识产权技能 -- 支持直接输出Word + 简介PPT**
@@ -296,5 +285,3 @@ jaccen -- [GitHub](https://github.com/jaccen) | [AI-Copyright-Skill](https://git
 - [Earl000333/paperforge](https://github.com/Earl000333/paperforge) -- 论文→专利映射方法论
 - [hapi-ds/mPAPA](https://github.com/hapi-ds/mPAPA) -- 结构化多步工作流
 - [IGTA-Tech/provisional-patent-skills](https://github.com/IGTA-Tech/provisional-patent-skills) -- 100分制质量评分
-
-> AI生成
