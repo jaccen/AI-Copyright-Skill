@@ -1,14 +1,3 @@
----
-AIGC:
-  ContentProducer: '001191110102MAD55U9H0F10002'
-  ContentPropagator: '001191110102MAD55U9H0F10002'
-  Label: '1'
-  ProduceID: '01eec431-7919-4d7f-bd20-4cad8d39ce2d'
-  PropagateID: '01eec431-7919-4d7f-bd20-4cad8d39ce2d'
-  ReservedCode1: 'b05b2e24-106b-491c-9cdd-42f386b2942f'
-  ReservedCode2: 'b05b2e24-106b-491c-9cdd-42f386b2942f'
----
-
 # AI-Copyright-Skill
 
 **The First AI-Native Intellectual Property Skill for Agent Workflows -- with Direct Word + PPT Output**
@@ -296,5 +285,3 @@ This skill was designed by analyzing and learning from these excellent projects:
 - [Earl000333/paperforge](https://github.com/Earl000333/paperforge) -- Paper-to-patent mapping methodology
 - [hapi-ds/mPAPA](https://github.com/hapi-ds/mPAPA) -- Structured multi-step workflow
 - [IGTA-Tech/provisional-patent-skills](https://github.com/IGTA-Tech/provisional-patent-skills) -- 100-point quality scoring
-
-> AI生成
