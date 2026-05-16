@@ -1,13 +1,3 @@
----
-AIGC:
-  ContentProducer: '001191110102MAD55U9H0F10002'
-  ContentPropagator: '001191110102MAD55U9H0F10002'
-  Label: '1'
-  ProduceID: '89964cd3-04e2-4421-b3f9-62ac85847a78'
-  PropagateID: '89964cd3-04e2-4421-b3f9-62ac85847a78'
-  ReservedCode1: '575b12e2-53d3-43a3-ac3a-98ad4b3f9a82'
-  ReservedCode2: '575b12e2-53d3-43a3-ac3a-98ad4b3f9a82'
----
 
 # AI Software Copyright Registration Guide
 
@@ -34,5 +24,3 @@ All templates: 10-15 pages, ≥6 screenshots with `[Screenshot: feature]` placeh
 ## 4. Common Pitfalls (§4)
 
 (1) "Pure algorithm not copyrightable"→emphasize software not algorithm (2) Open-source mixing→mark self-developed scope (3) Pre-trained weights→declare outside scope (4) Over-technical→avoid jargon for reviewers (5) Missing HCI steps→describe deploy/config/monitor (6) 3D Vision missing interaction→add viewpoint/params/export steps (7) Gen-AI missing safety→add safety filtering section (8) Embodied missing hardware→detail sensor/actuator/safety (9) RAG KB copyright→declare KB outside scope (10) Edge cross-compilation→prioritize inference+optimization code.
-
-> AI生成

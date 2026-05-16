@@ -1,14 +1,3 @@
----
-AIGC:
-  ContentProducer: '001191110102MAD55U9H0F10002'
-  ContentPropagator: '001191110102MAD55U9H0F10002'
-  Label: '1'
-  ProduceID: '3e4e3e62-27f9-4a74-98e0-4aac48c45855'
-  PropagateID: '3e4e3e62-27f9-4a74-98e0-4aac48c45855'
-  ReservedCode1: '5fa57445-56ce-458f-834f-78c451c66541'
-  ReservedCode2: '5fa57445-56ce-458f-834f-78c451c66541'
----
-
 # AI Patent Drafting Special Guide
 
 ## 1. Patentability (§1)
@@ -46,5 +35,3 @@ AI Core: G06N 3/02-3/10, 3/08, 3/004, G06N 5/00-5/04. Perception: G06V 10-82, 20
 ## 7. Domain Quick Reference (§7)
 
 Perception→hook: feature extraction improvement→structure: Acquire→Extract→Fuse→Output→metrics: mAP/IoU/PSNR/SSIM. Cognitive→hook: tech-scenario-bound semantics→Encode→Align→Reason→Decode→BLEU/ROUGE. Generative→hook: conditional control means→Condition→Inject→Denoise→Decode→FID/CLIP-Score. Decision→hook: physical loop→Perceive→Plan→Execute→Feedback→success rate. Engineering→hook: training/deployment optimization→Configure→Compute→Optimize→Validate→throughput/accuracy. Safety→hook: safety mechanism binding→Detect/Embed→Compute→Verify→Respond→detection rate/robustness. Industry→hook: domain-specific problem→Data→AI Process→Output→industry KPIs.
-
-> AI生成

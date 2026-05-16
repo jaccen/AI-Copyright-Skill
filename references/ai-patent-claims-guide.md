@@ -1,14 +1,3 @@
----
-AIGC:
-  ContentProducer: '001191110102MAD55U9H0F10002'
-  ContentPropagator: '001191110102MAD55U9H0F10002'
-  Label: '1'
-  ProduceID: 'f38efdde-a39a-4170-b359-e649d19fc6d5'
-  PropagateID: 'f38efdde-a39a-4170-b359-e649d19fc6d5'
-  ReservedCode1: 'aa7b4d2e-12db-44ec-8623-44ca0155b0e5'
-  ReservedCode2: 'aa7b4d2e-12db-44ec-8623-44ca0155b0e5'
----
-
 # AI Patent Claims Drafting Guide
 
 ## 1. General Principles
@@ -44,5 +33,3 @@ Method + System + Storage Medium triple required for every AI patent. Independen
 General 5-layer: (1) Module internal structure (2) Specific computation (3) Parameter range (4) Preferred embodiment (5) Training features.
 
 Domain-specific tables provided in §2 for 3D Vision, RAG, Diffusion, Embodied, Watermark - use instead of general when available.
-
-> AI生成
