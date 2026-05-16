@@ -6,498 +6,279 @@ author: jaccen
 tags: ["patent", "software-copyright", "ip", "ai", "intellectual-property", "docx", "pptx", "3d-vision", "generative-ai", "embodied-ai", "rag", "ai-watermark"]
 ---
 
-# AI知识产权文件生成
+# AI IP Document Generation
 
-面向**AI研发与AI行业应用**的知识产权文件生成技能，覆盖三大产出路径：
+Generate Chinese patent applications, software copyright registration materials, or technical disclosure reports from AI project code, research papers, and design docs. Direct Word (.docx) + PPT (.pptx) output. Built-in 7 AI domain coverage with 11 claim templates.
 
-- **专利路径**：从AI项目资料生成符合国知局格式的发明专利申请文件（权利要求书、说明书、摘要），含技术交底书中间产物
-- **软著路径**：从AI项目代码生成符合CPCC登记要求的软件著作权登记材料（说明书、源代码文档）
-- **交底书路径**：从论文/研究笔记生成可交付给代理人的技术交底书
+Three output paths:
+- **Patent**: CNIPA-format invention patent (claims + specification + abstract), with technical disclosure as intermediate deliverable
+- **Software Copyright**: CPCC registration materials (manual + source code document)
+- **Technical Disclosure**: From papers/notes to agent-deliverable disclosure
 
-三条路径共享需求诊断与资料解读阶段，生成阶段各自独立，均内建AI领域专业规则。
+## 7 AI Domains x 22 Sub-Directions
 
-## AI领域覆盖体系
+| Domain | Sub-Directions | Claim Template |
+|--------|---------------|----------------|
+| Perception AI | 2D CV · 3D Vision & Graphics · Audio/Video · Sensor Fusion | 2.1 Architecture · 2.2 3D Vision |
+| Cognitive & Language | LLM · Multimodal LLM · RAG · Knowledge Graph | 2.3 Training · 2.4 MLLM · 2.5 RAG |
+| Generative AI | Diffusion & Controlled Gen · AIGC Watermark · Style Transfer | 2.6 Diffusion |
+| Decision & Interaction | Agent · Embodied AI · RL | 2.7 Agent · 2.8 VLA |
+| AI Engineering | Training/Fine-tuning · Inference Opt · Data Engineering · Edge/IoT | 2.9 Inference · 2.10 Data |
+| AI Safety & Governance | Adversarial Defense · Watermark · Federated Learning · Alignment | 2.11 Watermark |
+| Industry Apps | Autonomous Driving · Industry QC · Healthcare · Finance · AI4Science · Digital Content | Domain-adapted |
 
-本技能覆盖 **7大领域 · 22细分方向** 的AI知识产权保护：
+## Triggers
 
-| 领域 | 细分方向 | 权利要求模板 |
-|------|----------|-------------|
-| **感知智能** | 2D计算机视觉 · 3D视觉与图形学 · 音视频感知 · 传感器融合 | 2.1 模型架构 · 2.2 3D视觉 |
-| **认知与语言** | NLP与大语言模型 · 多模态大模型 · 检索增强生成(RAG) · 知识图谱与推理 | 2.3 训练方法 · 2.4 多模态大模型 · 2.5 RAG |
-| **生成式AI** | 扩散模型与可控生成 · AIGC版权与水印 · 风格迁移与编辑 | 2.6 扩散模型与可控生成 |
-| **决策与交互** | 智能体(Agent) · 具身智能 · 强化学习 | 2.7 Agent · 2.8 具身智能 |
-| **AI工程化** | 训练与微调 · 推理部署与优化 · 数据工程 · 边缘与IoT AI | 2.9 推理优化 · 2.10 数据处理 |
-| **AI安全与治理** | AI安全与对抗 · AI水印与溯源 · 隐私计算与联邦学习 · AI对齐与可解释性 | 2.11 AI水印与溯源 |
-| **行业应用** | 自动驾驶 · 工业制造与质检 · 医疗健康 · 金融风控 · AI4Science · 数字内容与文旅 | 按领域适配对应模板 |
+patent / claims / specification / software copyright / disclosure / IP application / paper-to-patent / `/ai-copyright` / `/AI知产`
 
-## 触发条件
+**Iteration**: When user modifies existing output, enter iterative correction flow directly.
 
-用户提及以下任一场景时启用：
-
-- 专利申请、权利要求书、说明书、专利撰写、发明专利、实用新型、AI专利
-- 软著、软著登记、软件著作权、软件说明书、源代码文档
-- 技术交底书、专利交底书、技术披露书
-- IP申请、知识产权申报、知产材料、AI知识产权
-- 论文转专利、paper to patent
-- 斜杠指令：`/ai-copyright`、`/AI知产`
-
-**迭代意图**：当用户在已有产出上继续修改（改权利要求、补实施例、调整说明书等），直接进入对应路径的迭代修正流程，无需重新走完整流水线。
-
----
-
-## 总体流程
+## Overall Flow
 
 ```
-Phase 0 可专利性预判（仅专利路径）
-  └─ AI领域可专利性三要素检测 + 领域风险判定
-Phase A 需求诊断
-  ├─ 确定路径：专利 / 软著 / 交底书 / 组合
-  └─ 收集AI项目类型与领域归属
-Phase B 资料解读与项目识别
-  ├─ 自动识别AI项目类型（含3D视觉/生成式AI/具身智能/RAG等11类）
-  └─ 提取技术要点，形成要点清单
-Phase C 生成（按路径分支）
-  ├─ C1 专利申请文件
-  │   ├─ C1.1 现有技术检索与差异化
-  │   ├─ C1.2 专利布局建议（单件/分案）
-  │   ├─ C1.3 技术交底书（中间产物，用于交付代理人）
-  │   ├─ C1.4 权利要求书（11类模板按领域适配）
-  │   ├─ C1.5 说明书
-  │   ├─ C1.6 说明书摘要
-  │   └─ C1.7 量化自检
-  ├─ C2 软著登记材料
-  │   ├─ C2.1 AI软件说明书
-  │   ├─ C2.2 源代码文档
-  │   └─ C2.3 量化自检
-  └─ C3 技术交底书（独立路径）
-      ├─ C3.1 论文/笔记→交底书映射
-      ├─ C3.2 交底书撰写
-      └─ C3.3 量化自检
-Phase D 确认关卡（每阶段结尾）
-Phase E 迭代修正
-Phase F Word文档输出（默认自动执行）
-Phase G 简介PPT输出（专利路径默认，其他路径可选）
+Phase 0  Patentability Pre-Assessment (patent path only)
+Phase A  Requirement Diagnosis → path + domain + risk level
+Phase B  Project Analysis → auto-detect (11 types + 6 industries) + extract key points
+Phase C  Generation (branch by path)
+  C1 Patent: search → layout → disclosure → claims (11 templates) → specification → abstract → self-check
+  C2 Software Copyright: manual (4 templates) → source code doc → self-check
+  C3 Technical Disclosure: mapping (6 general + 7 domain-specific) → drafting → self-check
+Phase D  Confirmation Gate
+Phase E  Iterative Correction
+Phase F  Word Output (docx-js, auto)
+Phase G  Briefing PPT (python-pptx, patent default)
 ```
 
----
+## Phase 0: Patentability Pre-Assessment
 
-## Phase 0 可专利性预判
+Per `references/ai-patent-special.md` §1, check three elements:
 
-**触发条件**：用户选择专利路径时自动执行。
+| Element | Check | Pass Standard |
+|---------|-------|---------------|
+| Technical Problem | Anchored to specific scenario | Not "low efficiency" / "poor accuracy" |
+| Technical Means | Algorithm steps bound to system architecture | Each step linked to HW/SW component |
+| Technical Effect | Quantifiable | Concrete numbers or comparison baselines |
 
-依据 `references/ai-patent-special.md` 第1节，检测三要素：
+### Domain Risk Assessment (§1.3)
 
-| 要素 | 检测内容 | 通过标准 |
-|------|----------|----------|
-| 技术问题 | 是否锚定具体技术场景 | 非"效率低""精度差"等抽象表述 |
-| 技术手段 | 算法步骤是否与系统架构绑定 | 每一步骤关联硬件/软件组件 |
-| 技术效果 | 是否可量化 | 有具体数值或对比基准 |
+| Risk | Domain | Pitfall | Countermeasure |
+|------|--------|---------|----------------|
+| HIGH | Generative AI (pure content gen) | Classified as "rules of mental activities" | Must bind to tech scenario + conditional control means |
+| HIGH | Financial risk control | Classified as "business method" | Must bind to data processing means |
+| HIGH | AI alignment / explainability | Classified as "rules of mental activities" | Must bind to safety assurance in specific app scenario |
+| MED | Embodied AI | Pure motion control = mental activities | Bind each step to sensor input + actuator output |
+| MED | Reinforcement Learning | Pure strategy optimization = math method | Bind to physical system + physics-constrained reward |
+| MED | RAG | Pure information retrieval = info expression | Must show complete technical pipeline |
+| MED | AIGC watermark | Pure info marking = info expression | Watermark embedding must bind to model internal layers |
 
-### 领域风险判定
+**Decision**: All pass + low risk → proceed; All pass + high risk → proceed with mandatory domain countermeasures; Means fail → switch to disclosure path; Effect fail → supplement quantitative comparison.
 
-依据 `references/ai-patent-special.md` 第1.3节，根据识别出的AI领域给出可专利性风险提示：
+## Phase A: Requirement Diagnosis
 
-| 风险等级 | 领域 | 典型风险 | 撰写对策 |
-|----------|------|----------|----------|
-| **高** | 生成式AI（纯内容生成） | 被认定为智力活动规则 | 必须绑定技术场景+条件控制手段 |
-| **高** | 金融风控 | 被认定为商业方法 | 必须绑定数据处理手段 |
-| **高** | AI对齐/可解释性 | 被认定为智力活动规则 | 需绑定应用场景安全保障效果 |
-| **中** | 具身智能 | 纯运动控制落入智力活动规则 | 每步绑定传感器+执行器 |
-| **中** | 强化学习 | 纯策略优化落入数学方法 | 需绑定物理系统+物理约束奖励 |
-| **中** | RAG | 纯信息检索落入信息表达方法 | 需体现完整技术链路 |
-| **中** | AIGC水印 | 纯信息标记落入信息表达方法 | 水印嵌入需与模型内部层绑定 |
+Confirm with user: path selection, tech topic, AI domain (7 domains / 22 directions, auto-detect assisted), applicant info, inventor info, existing materials.
 
-**判定结果输出**：
-- 三要素全过 + 低风险 → 继续专利路径
-- 三要素全过 + 高风险 → 继续专利路径，但在Phase C1中强制引用领域专用撰写对策
-- 技术问题/技术手段不过 → 转交底书路径（积累完善后转专利）
-- 技术效果不过 → 继续专利路径，但需在说明书中补充定量对比
+**Gate**: Output 3-5 line diagnosis summary (including domain attribution and risk level).
 
----
+## Phase B: Project Analysis
 
-## Phase A 需求诊断
-
-向用户确认以下信息（不全时可跳过，后续推断并标注假设）：
-
-1. **路径选择**：专利申请 / 软著登记 / 交底书 / 组合？
-2. **技术主题**：一句话描述AI技术领域（如"基于3DGS的大场景实时重建"）
-3. **AI领域归属**（7大领域22方向，自动检测辅助）：
-
-| 领域 | 细分方向示例 |
-|------|-------------|
-| 感知智能 | 目标检测 · 语义分割 · 3DGS/NeRF · SLAM · 点云处理 · 多光谱融合 |
-| 认知与语言 | LLM预训练/微调 · VLM · RAG · 知识图谱 · 翻译 · 问答 |
-| 生成式AI | 文生图/视频/3D · 可控生成 · 风格迁移 · AIGC水印 |
-| 决策与交互 | LLM Agent · 多Agent协作 · VLA · 机器人操作 · 强化学习 |
-| AI工程化 | 分布式训练 · 量化蒸馏 · 端侧部署 · 合成数据 · NAS |
-| AI安全与治理 | 对抗防御 · 模型水印 · 联邦学习 · 对齐 · 幻觉检测 |
-| 行业应用 | 自动驾驶 · 工业质检 · 医疗影像 · 金融风控 · AI4Science · 数字孪生 |
-
-4. **申请人信息**：名称、地址（脱敏时用占位符）
-5. **发明人**：姓名（脱敏时用占位符）
-6. **已有材料**：代码仓库 / 论文 / 设计文档 / 研究笔记？
-
-**确认关卡**：输出3-5行诊断摘要（含领域归属和风险等级），等待用户确认路径与边界后再进入Phase B。
-
----
-
-## Phase B 资料解读与项目识别
-
-### B.1 AI项目自动识别
-
-按以下优先级扫描项目结构，依据 `references/ai-software-copyright-guide.md` 第1.1节决策树：
+### B.1 Auto-Detection (§1.1 Decision Tree)
 
 ```
-Read项目目录 → 识别入口文件类型 → 匹配AI项目类型
-├── app.py/main.py/serve.py → AI服务类
-├── train.py/trainer.py → AI训练类
-├── inference.py/predict.py → AI推理类
-├── render.py/splat.py/gaussian.py/nerf.py → 3D视觉类
-├── generate.py/sample.py/diffusion.py → 生成式AI类
-├── robot.py/control.py/vla.py → 具身智能类
-├── pipeline.py/workflow.py → AI流水线类
-│   ├── 含 langchain/crewai → Agent应用
-│   └── 含 rag/chroma/faiss → RAG系统
-└── package.json → 前端/全栈类
+Entry file → Project type
+app.py/main.py/serve.py → AI Service
+train.py/trainer.py → AI Training
+inference.py/predict.py → AI Inference
+render.py/gaussian.py/nerf.py → 3D Vision
+generate.py/diffusion.py → Generative AI
+robot.py/vla.py → Embodied AI
+pipeline.py + langchain → Agent
+pipeline.py + rag/faiss → RAG System
+package.json → Frontend/Fullstack
 ```
 
-同时检测行业应用特征（依据 `references/ai-software-copyright-guide.md` 第1.3节）。
+Also detect 6 industry categories (§1.3): autonomous driving / industry / healthcare / finance / AI4Science / digital content.
 
-### B.2 技术要点提取
+### B.2 Key Points Extraction
 
-Read项目目录，按以下优先级提取：
+Priority: model definition → training/inference scripts → rendering/generation/control scripts → papers → design docs → README.
 
-| 优先级 | 来源 | 关注内容 |
-|--------|------|----------|
-| 1 | 模型定义文件 | 网络架构、创新模块、损失函数 |
-| 2 | 训练/推理脚本 | 算法流程、训练策略、优化方法 |
-| 3 | 渲染/生成/控制脚本 | 3D渲染管线、扩散采样策略、动作空间定义 |
-| 4 | 论文/报告 | 方法描述、实验结果、技术对比 |
-| 5 | 设计文档/架构文档 | 系统架构、模块划分、核心流程 |
-| 6 | README/文档 | 功能说明、使用方式 |
+Output: **Key Points List** (architecture/algorithm/engineering-level innovations, scheme skeleton, key params, distinctions from prior art, quantifiable effects, domain attribution).
 
-提取结果形成**技术要点清单**：核心创新点（架构级/算法级/工程级）、技术方案骨架、关键参数/阈值、与现有技术的区别、可量化技术效果、**领域归属**（映射至7大领域之一）。
+**Gate**: Present key points list for user confirmation.
 
-**确认关卡**：展示技术要点清单（含领域归属），等待用户确认或补充。
+## Phase C1: Patent Application
 
----
+### C1.1 Prior Art Search
 
-## Phase C1 专利申请文件生成
+Online search 2-3 rounds: CNIPA patent DB, Google Patents, arXiv. Suggest CPC classification (§6, 6 groups / 30+ codes).
 
-### C1.1 现有技术检索与差异化
+### C1.2 Layout Advisory (§2)
 
-使用联网搜索工具检索相关专利和论文：搜索关键词从技术要点清单中提炼，分2-3轮搜索。范围：国知局专利库、Google Patents、arXiv相关论文。每条记录包含来源标识、技术概要、局限性。建议IPC/CPC分类（参考 `references/ai-patent-special.md` 第6节，含6组扩展子类）。
+| Innovation Distribution | Layout Strategy |
+|------------------------|-----------------|
+| Core innovation in architecture | Single application (arch + training + inference) |
+| Architecture + training independent | 2 applications |
+| Independent deployment optimization | 3 applications (arch + training + deployment) |
+| 3D reconstruction + rendering independent | 2 applications |
+| Generation model + control independent | 2 applications |
+| Embodied perception + control independent | 2 applications (perception-decision + control-execution) |
 
-### C1.2 专利布局建议
+### C1.3 Technical Disclosure (Intermediate Deliverable)
 
-依据 `references/ai-patent-special.md` 第2节：
+7-chapter structure: Invention Name → Tech Field → Background & Prior Art Defects → Invention Content (purpose + scheme + effects) → Figure Description → Specific Embodiments (optimal + alternative) → Key Innovation Summary (3-5 points).
 
-| 创新分布 | 布局策略 |
-|----------|----------|
-| 核心创新在模型架构 | 单件涵盖架构+训练+推理 |
-| 架构+训练各有独立创新点 | 分2件（架构件+训练件） |
-| 含独立部署优化创新 | 分3件（架构+训练+部署） |
-| 3D重建+渲染各自创新 | 分2件（重建件+渲染优化件） |
-| 生成模型+条件控制各自创新 | 分2件（生成件+控制件） |
-| 具身智能感知+控制各自创新 | 分2件（感知决策件+控制执行件） |
+Data source: Phase B key points + C1.1 search results + C1.2 layout advice.
 
-### C1.3 技术交底书（中间产物）
+### C1.4 Claims
 
-**定位**：专利路径的中间交付物，用于提交给专利代理人。
+Per `references/ai-patent-claims-guide.md`. Structure: Method (1 independent + 3-8 dependent) + System (1 independent + 3-8 dependent, step-by-step correspondence) + Storage Medium (1 independent).
 
-**章节结构**：发明名称→技术领域→背景技术与现有技术缺陷（3.1现有技术概况+3.2存在问题）→发明内容（4.1发明目的+4.2技术方案+4.3技术效果）→附图说明→具体实施方式（最优+替代方案）→关键创新点摘要（3-5条）。
+**11 Claim Templates by Domain (§2)**:
 
-**数据来源**：复用 Phase B 技术要点清单 + C1.1 检索结果 + C1.2 布局建议。
+| # | Type | Domain | Key Structure |
+|---|------|--------|---------------|
+| 2.1 | Model Architecture | Perception (2D) | Sub-module → processing action → intermediate result chain |
+| 2.2 | 3D Vision & Graphics | Perception (3D) | Capture → sparse reconstruction → dense optimization → rendering (4-stage) + rendering computation sub-steps |
+| 2.3 | Training Method | AI Engineering | Data construct → init → forward → loss → optimize → converge (6-step) |
+| 2.4 | Multimodal LLM | Cognitive & Language | Multi-encoder → projection layer → fusion → decode |
+| 2.5 | RAG | Cognitive & Language | Query parse → retrieve → rerank → context reconstruct → generate (5-stage) |
+| 2.6 | Diffusion & Controlled Gen | Generative AI | Condition encode → inject → denoise → decode + condition injection sub-steps |
+| 2.7 | Agent | Decision & Interaction | Intent → plan → tool execute → observe/reflect → respond |
+| 2.8 | Embodied AI (VLA) | Decision & Interaction | Sensor perception → encode+fuse → policy → actuator drive + feedback |
+| 2.9 | Inference Optimization | AI Engineering | Original model → optimize → inference strategy → result |
+| 2.10 | Data Processing | AI Engineering | Acquire → preprocess → augment → downstream |
+| 2.11 | AI Watermark & Traceability | AI Safety | Embed phase (position → generate → inject) + Verify phase (extract → match) |
 
-**与C3独立路径的区别**：C1.3输入为项目代码+技术要点清单（供代理人撰写正式申请，后续继续C1.4）；C3输入为论文/研究笔记（直接交付交底书，无后续生成）。
+**Domain-Specific Requirements (§1.3)**:
 
-### C1.4 权利要求书
+1. Every step must link to system component ("executed via GPU parallel computing unit")
+2. **3D Vision**: Must include full 4-stage pipeline; rendering step must expand rendering formula
+3. **Generative AI**: Condition injection step must specify injection method (cross-attention/adapter/ControlNet) to avoid "pure content generation" rejection
+4. **Embodied AI**: Every step must bind to sensor input + actuator output; include safety constraint dependent claim
+5. **RAG**: Must show complete 5-stage technical pipeline to avoid "pure information retrieval" rejection
+6. **AI Watermark**: Embed step must specify injection layer/position/encoding; verify step must quantify robustness metrics
+7. Training: Must include training data construction, loss function, optimization strategy
+8. Multimodal: Must include modality encoding → cross-modal alignment → fusion → decoding
 
-撰写规范见 `references/ai-patent-claims-guide.md`。
+**Dependent Claim Expansion**: General 5-layer (module structure → computation method → param range → preferred embodiment → training features) + 5 domain-specific expansion tables (§3.2).
 
-**核心结构**：方法权利要求（独立1项+从属3-8项）+ 系统/装置权利要求（独立1项+从属3-8项，与方法步骤一一对应）+ 计算机可读存储介质权利要求（独立1项）。
+### C1.5 Specification
 
-**11类权利要求模板按领域适配**（依据 `references/ai-patent-claims-guide.md` 第2节）：
+5-chapter structure: Tech Field → Background (prior art + defects) → Invention Content (problem + scheme + beneficial effects, must be quantified) → Figure Description (13-type figure requirements in §4) → Specific Embodiments.
 
-| 模板 | 方案类型 | 适用领域 | 关键结构特点 |
-|------|----------|----------|-------------|
-| 2.1 | 模型架构创新 | 感知智能(2D) | 子模块→处理动作→中间结果链式展开 |
-| 2.2 | 3D视觉与图形学 | 感知智能(3D) | 采集→稀疏重建→稠密优化→渲染四段式+渲染计算子步骤 |
-| 2.3 | 训练方法创新 | AI工程化 | 数据构建→初始化→前向→损失→优化→收敛六步 |
-| 2.4 | 多模态大模型 | 认知与语言 | 多编码器→投影层→融合→解码 |
-| 2.5 | 检索增强生成 | 认知与语言(RAG) | 查询解析→检索→重排→上下文重构→生成五段式 |
-| 2.6 | 扩散模型与可控生成 | 生成式AI | 条件编码→注入→去噪→解码+条件注入子步骤 |
-| 2.7 | 智能体(Agent) | 决策与交互 | 意图识别→规划→工具执行→观察反思→响应 |
-| 2.8 | 具身智能(VLA) | 决策与交互 | 传感器感知→编码融合→策略→执行器驱动+反馈 |
-| 2.9 | 推理优化 | AI工程化 | 原始模型→优化操作→推理策略→推理结果 |
-| 2.10 | 数据处理/增强 | AI工程化 | 获取→预处理→增强→下游处理 |
-| 2.11 | AI水印与溯源 | AI安全与治理 | 嵌入阶段(确定位置→生成→注入)+验证阶段(提取→匹配) |
+**Desensitization Rules (§5)**: 6 general replacements + 14 industry-specific + 4 3DGS/NeRF-specific.
 
-**AI领域特殊要求**（依据 `references/ai-patent-special.md` 第1.3节）：
+Figures: Use fenced mermaid (`flowchart TB`/`LR`). 13-type AI system figure requirements per §4.
 
-1. 每一步骤需关联系统组件（"通过GPU并行计算单元执行XX算子"）
-2. **3D视觉类**：需包含"采集→重建→优化→渲染"完整四段式，渲染步骤需展开渲染公式
-3. **生成式AI类**：条件注入步骤必须写明注入方式（交叉注意力/适配器/控制网），避免落入"纯内容生成"
-4. **具身智能类**：每一步骤需绑定传感器输入和执行器输出，需包含安全约束从属权利要求
-5. **RAG类**：需体现"查询→检索→重排→重构→生成"完整技术链路，避免落入"纯信息检索"
-6. **AI水印类**：嵌入步骤需写明注入层/位置/编码方式，验证步骤需量化鲁棒性指标
-7. 训练方法类：需包含训练数据构建、损失函数、优化策略
-8. 多模态类：需包含各模态编码→跨模态对齐→融合→解码
+### C1.6 Abstract
 
-**从属权利要求展开策略**：通用5层递进（模块结构→计算方式→参数范围→优选方式→训练特征），各领域专用展开方向见 `references/ai-patent-claims-guide.md` 第3.2节及各模板下的展开方向表。
+≤300 chars. Covers: tech domain + core scheme + main effect. No commercial terms. Replace algorithm names with generic expressions.
 
-### C1.5 说明书
+### C1.7 Quality Self-Check (100-point)
 
-**章节结构**：技术领域→背景技术（现有技术描述+缺陷）→发明内容（技术问题+技术方案+有益效果，效果必须量化）→附图说明（13类AI系统附图需求见 `references/ai-patent-special.md` 第4节）→具体实施方式（独立权利要求实施例+训练方法实施例+推理部署实施例）。
+| Item | Points | Standard |
+|------|--------|----------|
+| Independent claim completeness | 15 | -5 per missing feature |
+| Dependent claim back-reference correctness | 10 | -3 per error |
+| Method + System + Medium triple complete | 10 | -5 per missing type |
+| Specification sufficient disclosure | 15 | Enabling for skilled person |
+| Embodiments cover all claim features | 15 | -3 per uncovered feature |
+| Beneficial effects quantified | 10 | -3 per vague assertion |
+| Terminology consistency | 5 | -1 per synonym |
+| Abstract corresponds to claim 1 | 5 | -5 if not |
+| Desensitization completeness | 10 | -3 per leak |
+| Figure numbering consistency | 5 | -1 per inconsistency |
 
-**AI领域脱敏规则**（依据 `references/ai-patent-special.md` 第5节）：
+≥80: deliver. 60-80: auto-fix and deliver. <60: rewrite.
 
-| 类别 | 原始内容 | 脱敏替换 |
-|------|----------|----------|
-| 通用 | 数据集名/参数量/硬件/框架/时长/API | 见第5.1节6类替换表 |
-| 行业 | 医院/路测/产线/金融/场景/机器人等 | 见第5.2节行业扩展表 |
-| 3D专项 | 高斯数量/SFM库/渲染引擎/采样参数 | 见第5.3节3DGS/NeRF专项表 |
+## Phase C2: Software Copyright
 
-**附图**：使用fenced mermaid（`flowchart TB`/`LR` + `subgraph`），用"图X"引用并配文字说明。
+Per `references/ai-software-copyright-guide.md`.
 
-### C1.6 说明书摘要
+### C2.1 Software Manual (10-15 pages, ≥6 screenshots)
 
-300字以内，涵盖技术领域+核心技术方案+主要技术效果。不含商业性宣传用语，算法名称用通用表述替换。
+4 templates by project type:
 
-### C1.7 专利量化自检
+| Project Type | Template | Key Sections |
+|-------------|----------|-------------|
+| General AI service | §3.1 General | Standard 5 chapters |
+| 3D Vision/Reconstruction | §3.2 3D Vision | Capture → reconstruct → render → export |
+| Generative AI | §3.3 Gen-AI | Condition input → generation engine → safety management |
+| Embodied AI | §3.4 Embodied | Perception → decision → execution → simulation → monitoring |
 
-生成后内部执行（不写入交付文件），采用100分制评分：
+Key notes: Target non-technical reviewers; use `[Screenshot: feature name]` placeholders; describe deployment/config/monitoring for HCI requirement; declare open-source pre-trained weights outside protection scope.
 
-| 检查项 | 分值 | 评分标准 |
-|--------|------|----------|
-| 独立权利要求必要技术特征完整性 | 15 | 每缺一项扣5分 |
-| 从属权利要求回引正确性 | 10 | 每处错误扣3分 |
-| 方法+系统+介质三件套完整 | 10 | 每缺一类扣5分 |
-| 说明书充分公开 | 15 | 本领域技术人员可实施 |
-| 实施方式覆盖全部权利要求特征 | 15 | 每未覆盖特征扣3分 |
-| 有益效果量化支撑 | 10 | 空泛断言每处扣3分 |
-| 全文术语统一性 | 5 | 同义不同名每处扣1分 |
-| 摘要与权利要求1对应 | 5 | 不对应扣5分 |
-| 脱敏完整性 | 10 | 每处泄露扣3分 |
-| 附图编号与正文引用一致性 | 5 | 每处不一致扣1分 |
+### C2.2 Source Code Document (front 30 + back 30 pages, ≥50 lines/page)
 
-**80分以上**直接交付。**60-80分**自动修正后交付并标注修正点。**60分以下**返回Phase C1重写。
+12-level file priority (§2.1): model.py(train required) → train.py(required) → inference.py(required) → render.py(3D vision required) → dataset.py → loss.py → generate.py(gen-AI required) → control.py(embodied required) → retriever.py(RAG required) → config.yaml(optional).
 
----
+Desensitization (§2.2): Remove API keys, absolute paths, internal addresses, personal info, hardware models, cloud URLs, DB passwords. Retain algorithm comments.
 
-## Phase C2 软著登记材料生成
+### C2.3 Quality Self-Check
 
-软著登记材料规范见 `references/ai-software-copyright-guide.md`。
+Pages 15 + Screenshots 10 + Feature coverage 15 + Non-tech description 10 + GPU/CUDA info 10 + Code pages 15 + Lines per page 10 + Name consistency 5 + No secret leaks 10.
 
-### C2.1 AI软件说明书
+## Phase C3: Technical Disclosure
 
-**格式要求**：10-15页，A4排版，含截图≥6张。
+### C3.1 Paper-to-Disclosure Mapping (§3)
 
-**按项目类型选用说明书模板**：
+**General 6-type mapping**: Research Problem → Technical Problem | Contribution → Technical Solution | Method Modules → Implementation Units | Algorithm Flow → Implementation Flow | Experimental Outcome → Expected Effects | Ablation Study → Alternative Embodiments.
 
-| 项目类型 | 推荐模板 | 专用章节 |
-|----------|----------|----------|
-| 通用AI服务 | 3.1 通用型 | 标准五章结构 |
-| 3D视觉/重建 | 3.2 3D视觉专用 | 场景采集→重建→渲染→导出 |
-| 生成式AI | 3.3 生成式AI专用 | 条件输入→生成引擎→安全管理 |
-| 具身智能 | 3.4 具身智能专用 | 感知→决策→执行→仿真→监控 |
+**Domain-specific mapping (§3.2)**: 3D Vision (rendering formula → claim step) | Generative AI (noise schedule → claim step, condition injection → dependent claim) | Embodied AI (Sim2Real → adaptation step) | RL (reward function → computation step) | RAG (retrieval strategies → dependent claims) | AI Watermark (robustness experiments → verification step) | AI4Science (physics constraints → necessary feature).
 
-**撰写注意**：语言面向审查员避免英文行话；截图用`[截图: 功能名称界面]`占位；即使是服务端也需描述部署/配置/监控过程（软著要求"人机交互"）；开源权重声明不在保护范围；3D视觉类需补充视角选择/参数调节/导出操作步骤；生成式AI类需包含安全过滤章节；具身智能类需详细描述传感器/执行器环境和安全参数。
+### C3.2 Drafting
 
-### C2.2 源代码文档
+7-chapter structure (same as C1.3).
 
-**格式要求**：前30页+后30页，每页≥50行。
+### C3.3 Quality Self-Check
 
-**AI项目源文件优先级**（依据 `references/ai-software-copyright-guide.md` 第2.1节）：
+Problem anchoring 15 + Implementability 20 + Quantified comparison 15 + Clear distinction 15 + Figure coverage 15 + Agent comprehensibility 10 + Completeness 10.
 
-| 优先级 | 文件 | 必选条件 |
-|--------|------|----------|
-| 1 | model.py/network.py/arch.py | 必选 |
-| 2 | train.py/trainer.py | 必选 |
-| 3 | inference.py/predict.py | 必选 |
-| 4 | render.py/splat.py/gaussian.py | 3D视觉类必选 |
-| 5 | dataset.py/dataloader.py | 推荐 |
-| 6 | loss.py/criterion.py | 推荐 |
-| 7 | generate.py/sample.py/diffusion.py | 生成式AI类必选 |
-| 8 | control.py/policy.py/vla.py | 具身智能类必选 |
-| 9 | retriever.py/indexer.py/rag.py | RAG类必选 |
-| 10 | config.yaml/hparams.py | 可选 |
+## Phase D: Confirmation Gate
 
-**生成步骤**：Grep/Glob扫描→按优先级排序拼接→格式化每页50行→超3000行取前1500+后1500行→页眉加软件名称+版本号。
+After each phase: present summary, options: Confirm / Modify / Switch path / Save progress (.temp/ai-ip-progress.md).
 
-**脱敏清理**（`references/ai-software-copyright-guide.md` 第2.2节）：删API Key/Token/Secret、绝对路径、内网地址、个人邮箱/姓名、硬件型号、云服务URL、数据库密码；保留算法说明注释。
+## Phase E: Iterative Correction
 
-### C2.3 软著量化自检
+Identify → Locate → Targeted fix → Diff annotation (`<!-- Revision -->`) → Save as v{N} → Re-run affected self-check items only. Do NOT re-run full pipeline.
 
-| 检查项 | 分值 | 评分标准 |
-|--------|------|----------|
-| 说明书页数10-15页 | 15 | 不足10页扣10分，超15页扣5分 |
-| 截图占位≥6处 | 10 | 每少1处扣2分 |
-| 功能覆盖完整 | 15 | 每遗漏核心功能扣5分 |
-| AI能力描述面向非技术人员 | 10 | 每处专业术语未解释扣2分 |
-| 环境要求含GPU/CUDA信息 | 10 | 缺失扣10分 |
-| 源代码文档页数达标 | 15 | 不达标扣10分 |
-| 源代码每页≥50行 | 10 | 不达标扣5分 |
-| 名称版本号一致性 | 5 | 不一致扣5分 |
-| 无商业秘密泄露 | 10 | 每处泄露扣5分 |
+## Phase F: Word Output
 
----
+Auto-executed after Phase C (unless user requests md only). Uses docx-js workflow: `.temp/{case}-docx.js`.
 
-## Phase C3 技术交底书生成
+| Path | Output |
+|------|--------|
+| Patent | disclosure.docx + patent.docx (cover + claims + spec + abstract) + briefing.pptx |
+| Software Copyright | manual.docx + source_code.docx |
+| Technical Disclosure | single disclosure.docx |
 
-### C3.1 论文/笔记→交底书映射
+Format: Song Ti 24pt body / Hei Ti 32-28pt headings / 1.5x line spacing / 480DXA indent / 1-inch margins. Source code: Courier New 18pt, ≥50 lines/page.
 
-依据 `references/ai-patent-special.md` 第3节：
+Alternatives: `md` / `docx` (default) / `both`.
 
-**通用6类映射**：
+## Phase G: Briefing PPT
 
-| 输入要素 | 交底书映射 | 转换动作 |
-|----------|------------|----------|
-| Research Problem | 技术问题 | 学术语言→工程痛点 |
-| Contribution | 技术方案 | "we propose"→步骤化描述 |
-| Method Modules | 实施单元 | 每module→单元+步骤 |
-| Algorithm Flow | 实施流程 | 伪代码→步骤+流程图 |
-| Experimental Outcome | 预期效果 | 定量→"相比XX提升YY%" |
-| Ablation Study | 备选方案 | 变体→备选实施方式 |
+Auto for patent path; `--ppt` for others. python-pptx workflow: `.temp/{case}-ppt.py`.
 
-**领域专用映射补充**（3.2节）：
+5-8 slides: Cover → Background & Pain Points → Core Innovation → System Architecture → Effects Comparison → Patent Layout → Implementation Plan. 16:9, blue theme (#1B3A5C + #3B82F6), Microsoft YaHei font.
 
-| 领域 | 论文特有要素 | 额外交底书映射 |
-|------|-------------|---------------|
-| 3D视觉 | 渲染公式/相机标定 | 渲染计算步骤+标定子步骤 |
-| 生成式AI | 采样调度/条件控制 | 噪声调度步骤+条件注入步骤 |
-| 具身智能 | Sim2Real/动作空间 | 参数适配步骤+动作编码步骤 |
-| 强化学习 | 奖励函数设计 | 奖励计算步骤+物理约束展开 |
-| RAG | 检索策略对比 | 混合检索步骤+不同检索器→从属 |
-| AI水印 | 攻击鲁棒性实验 | 水印验证步骤+各攻击类型→从属 |
-| AI4Science | 物理守恒约束 | 约束损失计算步骤+守恒律→必要特征 |
-
-### C3.2 交底书撰写
-
-章节结构同C1.3（发明名称→技术领域→背景→发明内容→附图→实施方式→创新点摘要）。
-
-### C3.3 交底书量化自检
-
-| 检查项 | 分值 | 评分标准 |
-|--------|------|----------|
-| 技术问题锚定具体场景 | 15 | 抽象表述扣10分 |
-| 技术方案步骤完整可实施 | 20 | 每处不可实施扣5分 |
-| 技术效果有量化对比 | 15 | 无量化扣10分 |
-| 创新点与现有技术区别清晰 | 15 | 模糊扣10分 |
-| 附图覆盖核心流程 | 15 | 缺架构图扣10分，缺流程图扣5分 |
-| 代理人可理解度 | 10 | AI术语未解释每处扣2分 |
-| 材料完整性 | 10 | 缺章节扣5分 |
-
----
-
-## Phase D 确认关卡
-
-每个Phase结束后，向用户展示当前阶段产出的**摘要**，选项：
-
-1. **确认继续** → 进入下一阶段
-2. **修改当前阶段** → 说明修改点，原地修正后重新展示
-3. **切换路径** → 从当前阶段跳转到另一路径的对应阶段
-4. **暂停存档** → 保存当前进度到 `.temp/ai-ip-progress.md`
-
----
-
-## Phase E 迭代修正
-
-1. **识别改什么**：权利要求调整 / 说明书补充 / 软著修改 / 交底书修改
-2. **定位段落**：Read已交付文件，定位需修改部分
-3. **定向修正**：仅修改指定部分，保持其余内容不变
-4. **差异标注**：以 `<!-- 修订: 原文X→新文Y -->` 标注变更
-5. **另存交付**：新版本以 `{案件名}_v{N}.md` 命名，不覆盖旧版
-6. **重跑自检**：仅对修改涉及的自检项重新评分
-
-迭代时禁止：重跑完整流水线（除非用户明确要求）；修改未提及的章节。
-
----
-
-## Phase F Word文档输出
-
-**触发条件**：Phase C生成完成且自检通过后自动执行（用户明确要求Markdown时除外）。
-
-### 输出策略
-
-| 路径 | 默认输出 |
-|------|----------|
-| 专利 | 交底书.docx + 专利.docx（封面+权利要求+说明书+摘要）+ 简介.pptx |
-| 软著 | 软件说明书.docx + 源代码文档.docx |
-| 交底书 | 单个交底书.docx |
-| 组合 | 按路径分别输出 |
-
-### 文档格式
-
-专利文档：正文宋体24pt、标题黑体32/28pt、封面标题黑体36pt加粗、行距1.5倍、首行缩进480DXA、页边距1英寸、页眉section名称、页脚页码。
-
-软著文档：软件说明书宋体正文A4排版含截图占位；源代码文档Courier New 18pt每页50行页眉含软件名+版本号。
-
-### 生成流程
-
-使用内置 `docx` 技能的 docx-js 工作流：构建JS脚本(`.temp/{案件名}-docx.js`)→执行→验证文件大小>5KB。
-
-### 备选格式
-
-`md`（仅Markdown）/ `docx`（默认）/ `both`
-
----
-
-## Phase G 简介PPT输出
-
-**触发条件**：专利路径完成后默认执行；其他路径用户可指定 `--ppt` 触发。
-
-**PPT定位**：内部汇报与沟通工具，一页一个核心信息，5-8页。
-
-**页面结构**：封面(发明名称+申请人+AI领域标签)→背景与痛点(1-3个缺陷+量化)→核心创新方案(3-5步骤+创新点)→系统架构(与交底书附图对应)→技术效果对比(量化表格)→专利布局(系列申请关系)→实施计划。
-
-**生成流程**：使用内置 `pptx` 技能的 python-pptx 工作流(`.temp/{案件名}-ppt.py`)。16:9宽屏，科技蓝(#1B3A5C + #3B82F6)，微软雅黑32pt标题/18pt正文。
-
----
-
-## 输出交付规范
-
-### 文件命名
+## Output Specification
 
 ```
-outputs/{案件标识}/
-├── patent/
-│   ├── {案件名}_disclosure.docx         ← 交底书Word
-│   ├── {案件名}.docx                    ← 专利Word完整文件
-│   └── {案件名}_简介.pptx               ← 简介PPT
-├── software-copyright/
-│   ├── {软件名}_manual.docx             ← 软著说明书Word
-│   └── {软件名}_source_code.docx        ← 源代码文档Word
-└── disclosure/
-    └── {案件名}_disclosure.docx          ← 交底书Word
+outputs/{case-id}/
+├── patent/          disclosure.docx + {case}.docx + briefing.pptx
+├── software-copyright/  manual.docx + source_code.docx
+└── disclosure/      disclosure.docx
 ```
 
-每条路径同时保留Markdown中间文件（`_claims.md` / `_specification.md` / `_abstract.md` / `_manual.md` / `_source_code.md`），量化自检报告为 `{案件名}_selfcheck.md`。
+Each path also retains Markdown intermediates. Self-check report: `{case}_selfcheck.md`.
 
-### 禁止事项
+**Prohibitions**: No skill name/repo path/disclaimers in deliverables. No self-check section in body. No fabricated patent numbers/links. No "approximately" in claims. No commercial terms in abstract.
 
-- 交付文件中不得出现skill名、仓库路径、免责脚注
-- 正文不得包含自检清单章节
-- 不得虚构专利号、链接或检索结果
-- 权利要求书中不得出现"大约""左右"等不确定用语
-- 摘要不得包含商业性术语（"颠覆性""领先""首创"等）
+## Knowledge Index
 
----
-
-## AI领域知识产权核心知识索引
-
-| 知识领域 | 参考文件 | 关键内容 |
-|----------|----------|----------|
-| 算法可专利性判定（含领域风险） | references/ai-patent-special.md §1 | 三要素框架 + 8领域风险与对策 |
-| 专利拆分布局（含3D/具身特例） | references/ai-patent-special.md §2 | 单发明vs分案 + 具身智能2件布局 |
-| 论文→专利映射（通用+7领域） | references/ai-patent-special.md §3 | 通用6类 + 10领域专用映射 |
-| AI附图需求（13类系统） | references/ai-patent-special.md §4 | 13类AI系统必备附图 |
-| AI脱敏规则（通用+行业+3D专项） | references/ai-patent-special.md §5 | 6类通用 + 14行业项 + 4项3D专项 |
-| CPC/IPC分类（6组扩展） | references/ai-patent-special.md §6 | AI核心/感知/语言/决策/安全/行业6组子类 |
-| 7大领域速查 | references/ai-patent-special.md §7 | 领域→专利性抓手→权利要求结构→量化指标 |
-| 11类权利要求模板 | references/ai-patent-claims-guide.md §2 | 模型架构/3D视觉/训练/多模态/RAG/扩散/Agent/具身/推理/数据/水印 |
-| 从属权利要求5层+领域专用 | references/ai-patent-claims-guide.md §3 | 通用5层 + 5领域专用展开方向表 |
-| AI项目类型识别（11类+6行业） | references/ai-software-copyright-guide.md §1 | 决策树 + 11类型侧重点 + 6行业检测 |
-| AI源代码优先级（12级） | references/ai-software-copyright-guide.md §2 | 12级优先级 + 脱敏清单 + 行数策略 |
-| AI软著说明书（4套模板） | references/ai-software-copyright-guide.md §3 | 通用/3D视觉/生成式AI/具身智能4套 |
-| AI软著避坑（10大问题） | references/ai-software-copyright-guide.md §4 | 含3D/生成/具身/RAG/边缘专用避坑 |
+| Reference File | Contents |
+|---------------|----------|
+| `references/ai-patent-special.md` | §1 Patentability + 8 domain risks §2 Layout (incl 3D/embodied) §3 6-type + 10 domain mapping §4 13-type figures §5 6+14+4 desensitization §6 6-group CPC §7 Quick reference |
+| `references/ai-patent-claims-guide.md` | §1 Triple claim principle §2 11 claim templates §3 5-layer + 5 domain-dependent expansion |
+| `references/ai-software-copyright-guide.md` | §1 11-type + 6 industry detection §2 12-level priority + desensitization §3 4 manual templates §4 10 pitfalls |
