@@ -1,3 +1,4 @@
+
 # AI-Copyright-Skill
 
 **首个面向AI领域的Agent知识产权技能 -- 支持直接输出Word + 简介PPT**
@@ -106,6 +107,8 @@ AI-Copyright-Skill/
 
 将整个 `AI-Copyright-Skill/` 目录复制到技能文件夹：
 
+**macOS / Linux：**
+
 ```bash
 # 星辰超级智能体
 cp -r AI-Copyright-Skill/ ~/.config/teleai-super-agent/skills/AI-Copyright-Skill/
@@ -114,11 +117,27 @@ cp -r AI-Copyright-Skill/ ~/.config/teleai-super-agent/skills/AI-Copyright-Skill
 cp -r AI-Copyright-Skill/ .claude/skills/AI-Copyright-Skill/
 ```
 
+**Windows（PowerShell）：**
+
+```powershell
+# 星辰超级智能体
+Copy-Item -Recurse AI-Copyright-Skill/ "$env:USERPROFILE\.config\teleai-super-agent\skills\AI-Copyright-Skill"
+
+# OpenClaw / Claude Code
+Copy-Item -Recurse AI-Copyright-Skill/ .\.claude\skills\AI-Copyright-Skill
+```
+
 ### ClawHub
 
 ```bash
-clawhub install AI-Copyright-Skill
+# 安装到星辰超级智能体技能目录
+clawhub install ai-copyright-skill --dir ~/.config/teleai-super-agent/skills
+
+# 或安装到当前目录（需手动复制到技能目录）
+clawhub install ai-copyright-skill
 ```
+
+> **注意：** ClawHub 上的 slug 为 `ai-copyright-skill`（全小写）。如未安装 `clawhub` CLI，请访问 [ClawHub](https://clawhub.ai/) 获取安装说明。
 
 ## 使用方式
 

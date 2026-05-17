@@ -106,6 +106,8 @@ AI-Copyright-Skill/
 
 Copy the entire `AI-Copyright-Skill/` directory to your skills folder:
 
+**macOS / Linux:**
+
 ```bash
 # TeleAI Super Agent
 cp -r AI-Copyright-Skill/ ~/.config/teleai-super-agent/skills/AI-Copyright-Skill/
@@ -114,11 +116,27 @@ cp -r AI-Copyright-Skill/ ~/.config/teleai-super-agent/skills/AI-Copyright-Skill
 cp -r AI-Copyright-Skill/ .claude/skills/AI-Copyright-Skill/
 ```
 
+**Windows (PowerShell):**
+
+```powershell
+# TeleAI Super Agent
+Copy-Item -Recurse AI-Copyright-Skill/ "$env:USERPROFILE\.config\teleai-super-agent\skills\AI-Copyright-Skill"
+
+# OpenClaw / Claude Code
+Copy-Item -Recurse AI-Copyright-Skill/ .\.claude\skills\AI-Copyright-Skill
+```
+
 ### ClawHub
 
 ```bash
-clawhub install AI-Copyright-Skill
+# Install to TeleAI Super Agent skills directory
+clawhub install ai-copyright-skill --dir ~/.config/teleai-super-agent/skills
+
+# Or install to current directory (then copy manually)
+clawhub install ai-copyright-skill
 ```
+
+> **Note:** The ClawHub slug is `ai-copyright-skill` (lowercase). If you haven't installed `clawhub` CLI yet, see [ClawHub](https://clawhub.ai/) for setup instructions.
 
 ## Usage
 
