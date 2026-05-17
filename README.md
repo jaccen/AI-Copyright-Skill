@@ -1,3 +1,8 @@
+<div align="center">
+
+If you like it, please ⭐️ star this repo! 
+</div>
+
 # AI-Copyright-Skill
 
 **The First AI-Native Intellectual Property Skill for Agent Workflows -- with Direct Word + PPT Output**
