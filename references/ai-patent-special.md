@@ -1,14 +1,3 @@
----
-AIGC:
-  ContentProducer: '001191110102MAD55U9H0F10002'
-  ContentPropagator: '001191110102MAD55U9H0F10002'
-  Label: '1'
-  ProduceID: 'f43d1837-2fd0-4960-9d46-68da014a07c1'
-  PropagateID: 'f43d1837-2fd0-4960-9d46-68da014a07c1'
-  ReservedCode1: 'bae42bdb-8adb-4fe5-8c8c-bbfe8c8b8d7b'
-  ReservedCode2: 'bae42bdb-8adb-4fe5-8c8c-bbfe8c8b8d7b'
----
-
 # AI领域专利撰写特殊指南
 
 ## 1. 算法可专利性判定框架
@@ -236,5 +225,3 @@ T3. [训练收敛条件]。
 | AI工程化 | 训练/部署/数据的技术优化 | 配置→计算→优化→验证 | 训练收敛速度/推理吞吐/内存占用/精度保持率 |
 | AI安全与治理 | 安全机制与AI系统的绑定 | 检测/嵌入→计算→验证→响应 | 检测率/误报率/水印鲁棒性/隐私预算 |
 | 行业应用 | AI+行业特定技术问题 | 行业数据获取→AI处理→行业输出 | 行业KPI（缺陷漏检率/诊断准确率/交易检出率） |
-
-> AI生成

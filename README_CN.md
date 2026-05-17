@@ -1,4 +1,3 @@
-
 # AI-Copyright-Skill
 
 **首个面向AI领域的Agent知识产权技能 -- 支持直接输出Word + 简介PPT**
@@ -266,6 +265,81 @@ clawhub install ai-copyright-skill
 | `ai-patent-special.md` | §1 可专利性三要素+8领域风险 / §2 布局策略(含3D/具身特例) / §3 6类通用+10领域专用映射 / §4 13类系统附图 / §5 6+14+4脱敏替换 / §6 6组CPC/IPC分类 / §7 7大领域速查 |
 | `ai-software-copyright-guide.md` | §1 11类决策树+6行业检测 / §2 12级源文件优先级+脱敏清单 / §3 4套说明书模板(通用/3D视觉/生成式AI/具身智能) / §4 10大避坑 |
 | `ai-patent-claims-guide.md` | §1 三件套原则 / §2 11类权利要求模板(架构/3D视觉/训练/多模态/RAG/扩散/Agent/具身/推理/数据/水印) / §3 5层通用+5领域专用从属展开 |
+
+## 常见问题与排查
+
+### 生成PPT时报错 `Cannot find module 'pptxgenjs'`
+
+Phase G（简介PPT输出）依赖 PptxGenJS。技能会在工作目录下自动安装，但如果网络或权限问题导致安装失败：
+
+```bash
+# 手动安装在技能临时目录
+cd .temp/{案件名}/ && npm install pptxgenjs
+
+# 或全局安装
+npm install -g pptxgenjs
+```
+
+### 生成PPT时报错 `TypeError: Cannot create property 'options' on string`
+
+这是 PptxGenJS 的 API 陷阱。使用 `addText` 传入列表时，**必须传对象数组，不能传字符串数组**：
+
+```javascript
+// 错误 - 会抛出 TypeError
+slide.addText(["条目1", "条目2"], { bullet: true, ... });
+
+// 正确 - 传文本对象数组
+slide.addText([{ text: "条目1\n" }, { text: "条目2" }], { bullet: true, ... });
+```
+
+### 生成Word文档报错 `Cannot find module 'docx'`
+
+Phase F（Word输出）依赖 `docx` npm 包。星辰超级智能体通常已预装。如缺失：
+
+```bash
+npm install docx
+```
+
+### ClawHub 安装报错 `skill not found`
+
+ClawHub 上的 slug 是**全小写**的 `ai-copyright-skill`，使用 `AI-Copyright-Skill`（混合大小写）会匹配不到。
+
+```bash
+# 正确
+clawhub install ai-copyright-skill
+
+# 错误
+clawhub install AI-Copyright-Skill
+```
+
+### 安装后智能体不识别该技能
+
+确认技能文件夹放在正确路径，且文件夹名称完全匹配：
+
+| 智能体 | 技能目录 |
+|--------|----------|
+| 星辰超级智能体 | `~/.config/teleai-super-agent/skills/AI-Copyright-Skill/`（macOS/Linux） |
+| | `%USERPROFILE%\.config\teleai-super-agent\skills\AI-Copyright-Skill\`（Windows） |
+| OpenClaw / Claude Code | `.claude/skills/AI-Copyright-Skill/` |
+
+验证方式：确认文件夹内存在 `SKILL.md` 文件。
+
+### 自检评分低于80分
+
+评分 60-80 时技能会自动修正。如果重试后仍低于 60，常见原因：
+
+- **技术细节不足**：补充量化对比数据（例如"延迟从120ms降至35ms"）
+- **从属权利要求缺失**：确保独立权利要求后至少有5项从属权利要求
+- **脱敏不完整**：检查是否残留品牌名（A100、PyTorch）或具体参数值（7B、1.5B）
+
+### 生成的PPT中中文显示为方块
+
+默认字体为微软雅黑。如果系统未安装（非中文Windows或部分Linux发行版），安装该字体或替换为兼容的CJK字体：
+
+```javascript
+// 在 PptxGenJS 脚本中替换字体
+fontFace: "Noto Sans CJK SC"  // 或 "Source Han Sans CN"、"SimHei"
+```
 
 ## 版本历史
 

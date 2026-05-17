@@ -1,8 +1,3 @@
-<div align="center">
-
-If you like it, please ⭐️ star this repo! 
-</div>
-
 # AI-Copyright-Skill
 
 **The First AI-Native Intellectual Property Skill for Agent Workflows -- with Direct Word + PPT Output**
@@ -270,6 +265,81 @@ Agent (Phase C3 → Phase F): Mapping paper→disclosure→Word...
 | `ai-patent-special.md` | §1 Patentability 3-factor + 8 domain risks / §2 Layout strategy (incl. 3D & embodied) / §3 6-type + 10 domain mapping / §4 13-type figure requirements / §5 6+14+4 desensitization / §6 6-group CPC/IPC / §7 7-domain quick reference |
 | `ai-software-copyright-guide.md` | §1 11-type decision tree + 6 industry detection / §2 12-level source priority + desensitization / §3 4 manual templates (general/3D/gen-AI/embodied) / §4 10 common pitfalls |
 | `ai-patent-claims-guide.md` | §1 Triple claim principle / §2 11 claim templates (architecture/3D-vision/training/MLLM/RAG/diffusion/agent/embodied/inference/data/watermark) / §3 5-layer + 5 domain-dependent claim expansion |
+
+## FAQ & Troubleshooting
+
+### PPT generation fails with `Cannot find module 'pptxgenjs'`
+
+PptxGenJS is required for Phase G (briefing PPT). The skill auto-installs it in the working directory, but if network or permission issues prevent this:
+
+```bash
+# Manual install in the skill's temp directory
+cd .temp/{case-name}/ && npm install pptxgenjs
+
+# Or install globally
+npm install -g pptxgenjs
+```
+
+### PPT generation fails with `TypeError: Cannot create property 'options' on string`
+
+This is a PptxGenJS API pitfall. When using `addText` with bullet lists, you **must pass an array of objects**, not an array of strings:
+
+```javascript
+// Wrong - will throw TypeError
+slide.addText(["item1", "item2"], { bullet: true, ... });
+
+// Correct - array of text objects
+slide.addText([{ text: "item1\n" }, { text: "item2" }], { bullet: true, ... });
+```
+
+### Word document output fails with `Cannot find module 'docx'`
+
+The `docx` npm package is required for Phase F (Word output). It is usually pre-installed in TeleAI Super Agent. If missing:
+
+```bash
+npm install docx
+```
+
+### ClawHub install fails with `skill not found`
+
+The ClawHub slug is **lowercase**: `ai-copyright-skill`. Using `AI-Copyright-Skill` (mixed case) will not match.
+
+```bash
+# Correct
+clawhub install ai-copyright-skill
+
+# Wrong
+clawhub install AI-Copyright-Skill
+```
+
+### Installed skill but agent doesn't recognize it
+
+Make sure the skill folder is in the correct directory and the folder name matches exactly:
+
+| Agent | Skills Directory |
+|-------|------------------|
+| TeleAI Super Agent | `~/.config/teleai-super-agent/skills/AI-Copyright-Skill/` (macOS/Linux) |
+| | `%USERPROFILE%\.config\teleai-super-agent\skills\AI-Copyright-Skill\` (Windows) |
+| OpenClaw / Claude Code | `.claude/skills/AI-Copyright-Skill/` |
+
+Verify the skill is loaded by checking if `SKILL.md` exists inside the folder.
+
+### Self-check score is below 80
+
+The skill auto-fixes when the score is 60-80. If it stays below 60 after retries, the most common causes are:
+
+- **Insufficient technical detail**: Add more quantified comparison data (e.g., "latency reduced from 120ms to 35ms")
+- **Missing dependent claims**: Ensure the independent claim is followed by at least 5 dependent claims
+- **Incomplete desensitization**: Check for brand names (A100, PyTorch) or exact parameter values (7B, 1.5B)
+
+### Chinese characters display as boxes in generated PPT
+
+The default font is Microsoft YaHei (微软雅黑). If it is not installed on your system (common on non-Chinese Windows or some Linux distros), install it or switch to a compatible CJK font:
+
+```javascript
+// Replace in the PptxGenJS script
+fontFace: "Noto Sans CJK SC"  // or "Source Han Sans CN", "SimHei"
+```
 
 ## Version History
 
