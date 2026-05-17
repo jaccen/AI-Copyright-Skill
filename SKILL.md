@@ -1,3 +1,4 @@
+---
 name: AI-Copyright-Skill
 description: "AI-native IP skill: generate patent applications, software copyright materials, or technical disclosures from AI project code/papers/docs, with direct Word and PPT output. Covers 7 AI domains, 11 claim templates, patentability check, desensitization, prior-art search, and self-check."
 version: "2.0.0"
