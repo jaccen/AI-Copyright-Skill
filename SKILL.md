@@ -35,7 +35,7 @@ Phase C  生成（按路径分支）
 Phase D  确认关卡
 Phase E  迭代修正
 Phase F  Word文档输出（docx-js，默认自动执行）
-Phase G  简介PPT输出（html2pptx工作流，专利路径默认）
+Phase G  简介PPT输出（PptxGenJS工作流，专利路径默认）
 ```
 
 ## Phase 0 可专利性预判
@@ -122,42 +122,77 @@ C3.3 量化自检：场景锚定15+可实施20+量化对比15+区别清晰15+附
 
 布局建议：内容 ≤6 页用全幅布局；7-8 页用左右分栏（文字35%+图示65%）；禁止逐字搬运说明书原文。
 
-### G.2 PPT生成（html2pptx工作流）
+### G.2 PPT生成（PptxGenJS工作流）
 
-**禁止使用 python-pptx 创建新PPT**（定位粗放、样式控制差）。使用内置 pptx skill 的 **html2pptx** 工作流：
+使用 Node.js + PptxGenJS 编程式创建 PPT，与 Phase F 的 docx-js 模式一致。**禁止使用 python-pptx**（未预装，需 pip install）。**禁止使用 html2pptx 工作流**（依赖 Playwright + Chromium ~150MB，首次运行需下载浏览器，极易失败）。
 
-1. **初始化**：`const pptx = new PptxGenJS(); pptx.layout = 'LAYOUT_16x9'; pptx.author = 'AI-Copyright-Skill';`
-2. **为每页创建 HTML 文件**（尺寸 720pt × 405pt），存入 `.temp/{案件名}-ppt/`
-3. **调用 html2pptx**：读取 pptx skill 的 `html2pptx.md` 获取完整语法规则，对每页调用 `await html2pptx(htmlFile, pptx)`
-4. **保存**：`await pptx.writeFile({ fileName: outputDir + '/{案件名}_简介.pptx' })`
+**步骤**：
 
-HTML 规则：
-- 文字必须放在 `<p>`、`<h1>`-`<h6>`、`<ul>`、`<ol>` 标签内（否则被静默忽略）
-- 禁止 CSS 渐变（不会转换），需用 Sharp 预光栅化为 PNG
-- 背景色、边框、圆角只能设在 `<div>` 上，不能设在文字标签上
-- 使用 `class="placeholder"` 占位图表示意图区域
+1. **安装依赖**：在 `.temp/{案件名}/` 下执行 `npm install pptxgenjs`（~2秒，轻量）
+2. **生成脚本**：`.temp/{案件名}/{案件名}-pptx.js`，内容按下方模板
+3. **执行**：`node .temp/{案件名}/{案件名}-pptx.js`
+4. **输出**：`outputs/{案件标识}/patent/{案件名}_简介.pptx`
+
+**脚本模板**：
+
+```javascript
+const pptxgen = require("pptxgenjs");
+const pptx = new pptxgen();
+pptx.layout = "LAYOUT_16x9";
+pptx.author = "AI-Copyright-Skill";
+
+// 配色
+const C = { primary: "0052D9", secondary: "0033A0", light: "E6F0FF",
+            text: "333333", white: "FFFFFF" };
+
+// 字体
+const F = { title: { fontFace: "Microsoft YaHei", fontSize: 24, bold: true, color: C.white },
+            body:  { fontFace: "Microsoft YaHei", fontSize: 14, color: C.text },
+            note:  { fontFace: "Microsoft YaHei", fontSize: 10, color: "999999" },
+            big:   { fontFace: "Arial", fontSize: 36, bold: true, color: C.primary } };
+
+// --- 逐页添加（按 G.1 大纲填充） ---
+
+// 第1页：封面
+let s1 = pptx.addSlide();
+s1.background = { fill: C.primary };
+s1.addText("{{发明名称}}", { x: 0.8, y: 1.5, w: 8.4, h: 1.2, ...F.title, fontSize: 32, color: C.white, align: "center" });
+s1.addText("{{申请人}} | {{领域标签}}", { x: 0.8, y: 3.0, w: 8.4, h: 0.6, fontFace: "Microsoft YaHei", fontSize: 14, color: "B0C4DE", align: "center" });
+
+// 第2页：背景与痛点（蓝色标题栏 + 白色内容卡）
+let s2 = pptx.addSlide();
+s2.addShape(pptx.shapes.RECTANGLE, { x: 0, y: 0, w: 10, h: 0.9, fill: { color: C.primary } });
+s2.addText("背景与痛点", { x: 0.5, y: 0.1, w: 9, h: 0.7, ...F.title, color: C.white });
+s2.addText([{ text: "{{痛点1}}\n" }, { text: "{{痛点2}}\n" }, { text: "{{痛点3}}" }], { x: 0.8, y: 1.2, w: 8.4, h: 3.5, ...F.body, bullet: true, lineSpacingMultiple: 1.5 });
+
+// 第3-7页：按 G.1 大纲继续添加，结构同第2页（标题栏+内容区）
+
+// 保存
+pptx.writeFile({ fileName: "outputs/{{案件标识}}/patent/{{案件名}}_简介.pptx" });
+```
+
+**页面结构统一规范**：
+- 标题栏：顶部 0.9in 蓝色矩形 + 白色标题文字
+- 内容区：0.8in 起始，左右各 0.8in 边距
+- 列表项用 `bullet: true` + `lineSpacingMultiple: 1.5`
+- 效果对比页用 `addTable` 渲染指标对比表
 
 配色方案（科技蓝）：
-- 主色：`#0052D9`（标题、强调）
-- 辅色：`#0033A0`（副标题、图标）
-- 浅底：`#E6F0FF`（卡片背景、辅助区域）
+- 主色：`#0052D9`（标题栏、封面背景）
+- 辅色：`#0033A0`（副标题、装饰）
+- 浅底：`#E6F0FF`（卡片背景）
 - 正文：`#333333`
 - 背景：`#FFFFFF`
 
 字体规范：
-- 标题：微软雅黑 24pt Bold
+- 标题：微软雅黑 24pt Bold / 封面 32pt
 - 正文：微软雅黑 14pt Regular
-- 注释：微软雅黑 10pt Regular
-- 编号/数据：Arial 36pt Bold（大数字展示）
+- 注释：微软雅黑 10pt / 灰色
+- 数据展示：Arial 36pt Bold（大数字）
 
-### G.3 视觉验证（MANDATORY）
+### G.3 验证
 
-生成后必须执行验证：
-1. **缩略图检查**：`python {pptx_skill_path}/scripts/thumbnail.py {输出文件} .temp/{案件名}-ppt/thumbnails`
-2. **逐页检查**：文字截断、重叠、溢出、对比度不足、内容遗漏
-3. **品牌一致性**：所有页面配色统一、字体统一、对齐规范
-
-不通过则修改 HTML 后重新生成该页，禁止手动修补 pptx。
+生成后读取输出文件确认非空，用 `python -m markitdown {文件}.pptx` 提取文字校验内容完整性。如需视觉验证，可调用内置 pptx skill 的 thumbnail.py。
 
 ## Phase F Word文档输出
 
