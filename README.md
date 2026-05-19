@@ -113,7 +113,7 @@ Copy the entire `AI-Copyright-Skill/` directory to your skills folder:
 cp -r AI-Copyright-Skill/ ~/.config/teleai-super-agent/skills/AI-Copyright-Skill/
 
 # OpenClaw / Claude Code
-cp -r AI-Copyright-Skill/ .claude/skills/AI-Copyright-Skill/
+cp -r AI-Copyright-Skill/ ~/.claude/skills/AI-Copyright-Skill/
 ```
 
 **Windows (PowerShell):**
