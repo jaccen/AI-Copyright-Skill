@@ -43,6 +43,32 @@
     ├── 含 three.js/opencv.js → 可视化/渲染
     ├── 含 electron/tauri → 桌面应用
     └── 含 next.js/nuxt.js → Web应用
+├── world_model.py / env.py / simulator.py → 世界模型/仿真类
+│   ├── 含 gym/mujoco → 强化学习仿真环境
+│   ├── 含 habitat/ai2thor → 具身AI环境
+│   └── 含 unreal/carla → 3D仿真渲染
+├── mamba.py / ssm_model.py / state_space.py → 状态空间模型类
+│   ├── 含 mamba_ssm/causal-conv1d → Mamba/SSM实现
+│   └── 含 rwkv/linear_attention → 线性注意力/RWKV
+├── dit.py / diffusion_transformer.py → 扩散Transformer类
+│   ├── 含 diffusers/ditm → 视频生成
+│   ├── 含 sd3/flux → 图像生成
+│   └── 含 rectified_flow → 流匹配生成
+├── agent.py / multi_agent.py / tool_use.py → 智能体(Agent)类
+│   ├── 含 langgraph/crewai/multiagent → 多Agent系统
+│   ├── 含 function_calling/tool_use → 工具调用Agent
+│   └── 含 memory/vector_store → 持久记忆Agent
+├── watermark.py / fingerprint.py → AI安全/水印类
+│   ├── 含 model_fingerprint → 模型指纹
+│   └── 含 image_watermark/detection → 图像水印
+├── molecular.py / protein.py / materials.py → AI4Science类
+│   ├── 含 rdkit/openmm/pymatgen → 分子/材料科学
+│   ├── 含 torch-geometric/dgl → 图神经网络
+│   └── 含 PINN/neural_operator → 物理信息ML
+└── digital_human.py / avatar.py → 数字人类
+    ├── 含 audio2face/face_driver → 面部驱动
+    ├── 含 tts/asr/vocoder → 语音处理
+    └── 含 motion_generation/retarget → 动作生成
 ```
 
 ### 1.2 各类型软著说明书侧重点
@@ -60,6 +86,13 @@
 | 具身智能/机器人 | 传感器数据、控制指令、仿真环境、遥操作 | 仿真界面、传感器数据可视化、任务执行记录 |
 | RAG系统 | 知识库管理、检索结果、生成集成、对话流程 | 知识库管理页、检索结果预览、对话界面 |
 | 边缘部署 | 端侧推理、模型适配、资源监控、OTA更新 | 设备管理页、推理性能监控、模型版本管理 |
+| 世界模型/仿真 | 仿真环境构建、状态预测、物理验证、场景生成 | 仿真环境构建界面、状态预测可视化、场景对比页 |
+| 状态空间模型(SSM) | 长序列建模、高效推理、选择性扫描、多尺度融合 | 模型配置页、推理性能对比、长序列处理结果 |
+| 扩散Transformer | 视频生成、图像生成、3D生成、条件控制 | 生成参数配置、多条件组合、结果预览与对比 |
+| 智能体(Agent) | 工具调用、任务规划、多Agent协作、记忆管理 | 对话界面、工具调用日志、任务规划可视化 |
+| AI安全/水印 | 水印嵌入、指纹提取、鲁棒性验证 | 嵌入界面、提取验证结果、攻击测试报告 |
+| AI4Science | 分子建模、材料预测、物理仿真、实验设计 | 分子可视化、预测结果对比、实验配置 |
+| 数字人 | 面部驱动、语音合成、动作生成、实时交互 | 预览界面、参数调节、实时驱动效果 |
 
 ### 1.3 行业应用检测
 
@@ -73,6 +106,9 @@
 | 金融风控 | fraud/credit/trading/compliance, 交易数据格式 | 数据接入→特征工程→风险评分→决策输出→合规留痕 |
 | AI4Science | molecule/protein/crystal/force_field, rdkit/openmm | 物理建模→数据驱动→约束优化→结果验证 |
 | 数字内容/文旅 | cultural_heritage/digital_twin/avatar, 3D采集 | 采集→重建→渲染→交互→导出，强调展示/导出功能 |
+| 能源/电力 | load_forecast/grid_optimization/battery, SCADA/EMS | 负荷预测→发电优化→电网调度→安全校验，标注实时性和可靠性指标 |
+| 农业/种植 | crop_disease/yield_prediction/soil, 遥感数据 | 遥感获取→环境分析→病虫害检测→产量预测，强调多时相数据处理 |
+| 零售/电商 | recommendation/pricing/inventory, 用户行为数据 | 用户画像→推荐匹配→动态定价→库存优化，强调实时性和A/B测试 |
 
 ## 2. AI源代码文档特殊处理
 
@@ -88,10 +124,14 @@
 | 6 | 损失函数(loss.py/criterion.py) | 推荐 |
 | 7 | 生成/采样(generate.py/sample.py/diffusion.py) | 生成式AI类必选 |
 | 8 | 控制/策略(control.py/policy.py/vla.py) | 具身智能类必选 |
-| 9 | 检索/索引(retriever.py/indexer.py/rag.py) | RAG类必选 |
-| 10 | 配置文件(config.yaml/hparams.py) | 可选 |
-| 11 | 工具函数(utils.py/helpers.py) | 可选 |
-| 12 | 测试文件(test_*.py) | 不选 |
+| 8.5 | 世界模型/仿真(world_model.py/env.py/simulator.py) | 世界模型/仿真类必选 |
+| 8.6 | Agent框架(agent.py/multi_agent.py/tool_use.py) | Agent类必选 |
+| 8.7 | AI安全模块(watermark.py/fingerprint.py/adversarial.py) | AI安全类必选 |
+| 8.8 | 科学计算模块(molecular.py/protein.py/physics.py) | AI4Science类必选 |
+| 13 | 检索/索引(retriever.py/indexer.py/rag.py) | RAG类必选 |
+| 14 | 配置文件(config.yaml/hparams.py) | 可选 |
+| 15 | 工具函数(utils.py/helpers.py) | 可选 |
+| 16 | 测试文件(test_*.py) | 不选 |
 
 ### 2.2 源代码脱敏清理清单
 
@@ -284,6 +324,49 @@
 
 4. 非功能需求
 
+ 5. 常见问题
+```
+
+### 3.5 世界模型/仿真类专用章节
+
+```
+1. 引言
+   1.1 编写目的
+   1.2 软件概述
+       - 功能定位：基于AI的世界模型构建与仿真预测软件
+       - 核心能力描述（面向审查员）：根据当前环境状态和动作输入，
+         自动预测未来环境状态并生成可观测结果，用于仿真测试和决策验证
+   1.3 运行环境
+       - 硬件要求（含GPU显存要求，标注仿真保真度级别对应硬件）
+       - 软件要求（含仿真引擎/物理引擎版本）
+
+2. 软件安装与初始化
+   2.1 环境配置
+   2.2 依赖安装（含CUDA扩展和仿真引擎依赖）
+   2.3 预训练模型获取
+   2.4 仿真环境参数配置
+
+3. 功能说明
+   3.1 功能模块总览
+   3.2 数据采集与编码模块
+       - 多模态传感器数据接入
+       - 状态编码与特征提取
+   3.3 世界模型核心模块（AI核心引擎）
+       - 模型加载与初始化
+       - 状态转移预测
+       - 物理约束嵌入
+   3.4 渲染与输出模块
+       - 可观测视图渲染
+       - 预测结果可视化
+   3.5 仿真评估模块
+       - 预测精度评估
+       - 物理一致性验证
+   3.6 场景管理模块
+       - 仿真场景创建与管理
+       - 场景参数调节
+
+4. 非功能需求
+
 5. 常见问题
 ```
 
@@ -301,3 +384,7 @@
 | 具身智能缺少硬件描述 | 软著要求运行环境明确 | 详细描述传感器/执行器型号范围、通信协议、安全参数 |
 | RAG系统知识库版权 | 知识库含第三方内容 | 声明知识库内容不在保护范围，仅保护检索增强生成软件 |
 | 边缘部署交叉编译 | 源代码含宿主机和目标设备两套环境 | 源代码文档优先提交模型推理和端侧优化代码 |
+| 世界模型软件缺少物理验证 | 审查员可能关注预测结果的物理合理性 | 增加"物理一致性验证"功能章节，描述守恒约束和碰撞检测 |
+| Agent软件缺少工具管理描述 | 工具调用是Agent的核心功能 | 详细描述工具注册、选择策略、执行日志和错误处理 |
+| AI4Science缺少领域可解释性 | 科学领域要求结果可解释和可验证 | 增加"结果解释与验证"章节，描述与物理定律/实验数据的对比 |
+| 涉及个人数据的AI软件缺少隐私声明 | 2026版审查指南强化AI伦理审查 | 增加数据合规声明，描述脱敏处理和用户授权机制 |

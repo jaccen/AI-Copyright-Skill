@@ -1,3 +1,14 @@
+---
+AIGC:
+  ContentProducer: '001191110102MAD55U9H0F10002'
+  ContentPropagator: '001191110102MAD55U9H0F10002'
+  Label: '1'
+  ProduceID: '5a3b0c76-b274-4250-bf4b-677467b9bc56'
+  PropagateID: '5a3b0c76-b274-4250-bf4b-677467b9bc56'
+  ReservedCode1: 'df4bd4dc-aba8-48b3-93a4-52bc4d5b7378'
+  ReservedCode2: 'df4bd4dc-aba8-48b3-93a4-52bc4d5b7378'
+---
+
 # AI-Copyright-Skill
 
 **首个面向AI领域的Agent知识产权技能 -- 支持直接输出Word + 简介PPT**
@@ -45,21 +56,27 @@
 
 ### AI领域专属能力
 
-- **可专利性预判 + 领域风险**（Phase 0）：三要素检测 + 8个高风险领域风险判定与撰写对策
-- **11类权利要求模板**：模型架构 / 3D视觉 / 训练方法 / 多模态大模型 / RAG / 扩散模型 / Agent / 具身智能 / 推理优化 / 数据处理 / AI水印
-- **领域专用从属权利要求展开策略**：5层通用 + 5个领域专用展开方向表
+- **可专利性预判 + 领域风险**（Phase 0）：三要素检测 + 13个高/中风险领域风险判定与撰写对策
+- **15类权利要求模板**：模型架构 / 3D视觉 / 训练方法 / 多模态大模型 / RAG / 扩散模型 / Agent / 具身智能 / 推理优化 / 数据处理 / AI水印 / 世界模型 / SSM / 视频生成 / AI原生应用
+- **领域专用从属权利要求展开策略**：5层通用 + 9个领域专用展开方向表
 - **专利布局建议**：单件vs分案决策树 + 3D视觉/具身智能特例
 - **6+14+4脱敏替换表**：6类通用 + 14行业项 + 4项3DGS/NeRF专项
-- **AI项目自动识别**：11类项目决策树 + 6行业特征检测
-- **源代码优先级排序**：12级优先级 + 领域必选文件（3D视觉/生成式AI/具身智能/RAG）
+- **AI项目自动识别**：15+类项目决策树 + 9行业特征检测
+- **源代码优先级排序**：16级优先级 + 领域必选文件（3D视觉/生成式AI/具身智能/RAG）
 - **论文→专利映射**：6类通用 + 10领域专用映射规则
-- **4套软件说明书模板**：通用 / 3D视觉 / 生成式AI / 具身智能
+- **5套软件说明书模板**：通用 / 3D视觉 / 生成式AI / 具身智能 / 世界模型与仿真
 - **13类AI系统附图需求**：从深度学习推理到AI水印系统
 - **6组CPC/IPC分类**：30+分类号覆盖AI核心/感知/语言/决策/安全/行业
 - **100分制质量评分**：每条路径的量化自检
 - **交底书中间产物**（C1.3）：基于技术要点+检索结果自动生成
 - **直接Word(.docx)输出**（Phase F）：基于docx-js的专业专利文档排版
 - **简介PPT(.pptx)输出**（Phase G）：5-8页执行级汇报，含AI领域标签
+- **多源查新工具链**（Phase C1.1）：国知局爬虫 + Google Patents API + arXiv + WebSearch降级
+- **结构化现有技术对比**（Phase C1.1b）：特征对比表 + 低/中/高风险分级
+- **专利附图自动生成**（Phase H）：Mermaid/Graphviz → PNG，9类AI领域专用图表
+- **完整OA答复工作流**（Phase E.3）：6步审查意见答复 + A33修改超范围合规检查
+- **迭代追溯机制**：时间戳交付物 + 修订对话记录（逐条追加+差异追溯）
+- **EPO/USPTO差异化撰写**（§14）：35 USC 101/102/103、Art. 52/56/83、多局权利要求格式
 
 ### 用户体验设计
 
@@ -77,11 +94,12 @@ Phase 0  可专利性预判 + 领域风险判定（仅专利路径）
 Phase A  需求诊断 -> 路径选择+领域归属+风险等级
 Phase B  项目分析 -> 自动识别AI项目类型(11类)+6行业检测+提取技术要点
 Phase C  生成（按路径分支）
-  ├── C1  专利（查新 -> 布局建议 -> 交底书 -> 权利要求(11类模板) -> 说明书 -> 摘要 -> 自检）
-  ├── C2  软著（软件说明书(4套模板) -> 源代码文档 -> 自检）
+  ├── C1  专利（查新 -> 布局建议 -> 交底书 -> 权利要求(15类模板) -> 说明书 -> 摘要 -> 自检）
+  ├── C2  软著（软件说明书(5套模板) -> 源代码文档 -> 自检）
   └── C3  交底书（通用+领域专用映射 -> 撰写 -> 自检）
 Phase D  确认关卡（每阶段末用户审核）
 Phase E  迭代修正（定向修改，不重跑全流程）
+Phase H  专利附图自动生成（Mermaid/Graphviz→PNG，自动嵌入说明书）
 Phase F  Word文档输出（默认自动执行，基于docx-js）
 Phase G  简介PPT输出（专利路径默认，其他路径可选）
 ```
@@ -94,10 +112,16 @@ AI-Copyright-Skill/
 ├── README.md                             # 英文文档
 ├── README_CN.md                          # 本文件
 ├── LICENSE                               # MIT许可证
+├── tools/                                # 查新检索脚本
+│   ├── cnipa_search.py                   # 国知局专利检索（Playwright）
+│   └── google_patents_search.py          # Google Patents API检索
+├── examples/                             # 示例案件
+│   └── example-3dgs-denoise/             # 3DGS去噪示例
 └── references/                           # 领域知识库
-    ├── ai-patent-special.md              # 可专利性+领域风险+布局策略+映射表+脱敏规则+CPC分类(7节)
-    ├── ai-software-copyright-guide.md    # 项目识别(11类)+6行业检测+源文件12级优先级+4套说明书模板+10大避坑
-    └── ai-patent-claims-guide.md         # 11类权利要求模板+5层通用+5领域专用从属展开策略
+    ├── ai-patent-special.md              # 可专利性+领域风险+布局+映射+脱敏+CPC+OA答复+EPO/USPTO(14节)
+    ├── ai-software-copyright-guide.md    # 项目识别(15+类)+9行业检测+源文件16级优先级+5套说明书模板+14大避坑
+    ├── ai-patent-claims-guide.md         # 15类权利要求模板+5层通用+9领域专用从属展开策略
+    └── ai-prior-art-search.md            # 多源查新工具链+结构化对比+风险分级+报告规范
 ```
 
 ## 安装
@@ -234,17 +258,17 @@ clawhub install ai-copyright-skill
 
 ## 与现有Skill对比
 
-| 功能 | AI-Copyright-Skill v2.0 | Fokkyp/SoftwareCopyright-Skill | patent-disclosure-skill | patent-software-ip (v1.0) |
+| 功能 | AI-Copyright-Skill v3.0 | Fokkyp/SoftwareCopyright-Skill | patent-disclosure-skill | patent-software-ip (v1.0) |
 |------|:----------------------:|:------------------------------:|:-----------------------:|:-------------------------:|
 | 专利申请文件 | 完整 | -- | -- | 完整 |
 | 软著登记材料 | 完整 | 完整 | -- | 完整 |
 | 技术交底书 | 完整 | -- | 完整 | -- |
 | **7大AI领域·22细分方向** | **支持** | -- | -- | -- |
-| **11类权利要求模板** | **支持** | -- | -- | -- |
-| **领域专用从属展开策略** | **5领域** | -- | -- | -- |
-| **领域风险判定** | **8风险区** | -- | -- | -- |
+| **15类权利要求模板** | **支持** | -- | -- | -- |
+| **领域专用从属展开策略** | **9领域** | -- | -- | -- |
+| **领域风险判定** | **13风险区** | -- | -- | -- |
 | **13类系统附图需求** | **支持** | -- | -- | -- |
-| **4套软件说明书模板** | **支持** | -- | -- | -- |
+| **5套软件说明书模板** | **支持** | -- | -- | -- |
 | 交底书作为专利中间产物 | 支持 | -- | -- | -- |
 | 直接Word(.docx)输出 | 支持 | -- | -- | -- |
 | 简介PPT(.pptx)输出 | 支持 | -- | -- | -- |
@@ -257,14 +281,21 @@ clawhub install ai-copyright-skill
 | 100分制质量评分 | 有 | -- | -- | -- |
 | 量化自检 | 有 | -- | -- | 仅清单 |
 | 迭代修正 | 有 | -- | 有 | 有 |
+| **多源查新工具链** | **国知局+Google Patents+arXiv** | -- | **仅国知局** | -- |
+| **结构化现有技术对比** | **特征表+风险分级** | -- | -- | -- |
+| **专利附图自动生成** | **Mermaid/Graphviz→PNG** | -- | **Mermaid** | -- |
+| **完整OA答复工作流** | **6步+A33合规检查** | -- | -- | -- |
+| **EPO/USPTO差异化撰写** | **§14差异化规则** | -- | -- | -- |
+| **迭代追溯机制** | **时间戳+对话记录** | -- | **时间戳** | -- |
 
 ## 知识库内容
 
 | 参考文件 | 内容 |
 |----------|------|
-| `ai-patent-special.md` | §1 可专利性三要素+8领域风险 / §2 布局策略(含3D/具身特例) / §3 6类通用+10领域专用映射 / §4 13类系统附图 / §5 6+14+4脱敏替换 / §6 6组CPC/IPC分类 / §7 7大领域速查 |
-| `ai-software-copyright-guide.md` | §1 11类决策树+6行业检测 / §2 12级源文件优先级+脱敏清单 / §3 4套说明书模板(通用/3D视觉/生成式AI/具身智能) / §4 10大避坑 |
-| `ai-patent-claims-guide.md` | §1 三件套原则 / §2 11类权利要求模板(架构/3D视觉/训练/多模态/RAG/扩散/Agent/具身/推理/数据/水印) / §3 5层通用+5领域专用从属展开 |
+| `ai-patent-special.md` | §1 可专利性三要素+13领域风险 / §2 布局策略 / §3 映射表 / §4 附图 / §5 脱敏 / §6 CPC / §7 速查 / §8 2026审查指南 / §9 创新挖掘 / §10 OA答复 / §11 领域算法 / §12 术语 / §13 PCT / §14 EPO/USPTO |
+| `ai-software-copyright-guide.md` | §1 15+类决策树+9行业检测 / §2 16级源文件优先级+脱敏 / §3 5套说明书模板(含世界模型/仿真) / §4 14避坑 |
+| `ai-patent-claims-guide.md` | §1 三件套 / §2 15类权利要求模板(含世界模型/SSM/视频生成/AI原生应用) / §3 5层+9领域专用从属展开 |
+| `ai-prior-art-search.md` | §1 多源查新(国知局/Google/arXiv) / §2 结构化对比+风险分级 / §3 报告输出规范 |
 
 ## 常见问题与排查
 
@@ -343,6 +374,23 @@ fontFace: "Noto Sans CJK SC"  // 或 "Source Han Sans CN"、"SimHei"
 
 ## 版本历史
 
+### v3.0.0 (2026-05)
+
+- 新增 **Phase H: 专利附图自动生成**（Mermaid/Graphviz→PNG，9类AI领域图表）
+- 新增 **多源查新工具链**（国知局爬虫 + Google Patents API + arXiv + WebSearch降级）
+- 新增 **结构化现有技术对比**（特征对比表 + 低/中/高风险分级）
+- 新增 **完整OA答复工作流**（6步：解析→对比→策略→A33检查→陈述→替换页）
+- 新增 **迭代追溯机制**（时间戳交付物 + 修订对话记录逐条追加）
+- 新增 **EPO/USPTO差异化撰写规则**（§14：35 USC 101/102/103、Art. 52/56/83）
+- 新增 `tools/` 目录：国知局检索脚本 + Google Patents检索脚本
+- 新增 `examples/` 目录：3DGS去噪示例案件
+- 新增 `references/ai-prior-art-search.md` 查新知识库
+- 权利要求模板从11类扩展为 **15类**（新增：世界模型/SSM/视频生成/AI原生应用）
+- 领域风险从8个扩展为 **13个**
+- 软件说明书模板从4套扩展为 **5套**（新增：世界模型/仿真）
+- 源文件优先级从12级扩展为 **16级**
+- 同步 README 所有数字与 SKILL.md 一致
+
 ### v2.0.0 (2026-05)
 
 - 从6类权利要求模板扩展为 **11类**，覆盖7大AI领域·22细分方向
@@ -378,3 +426,7 @@ jaccen -- [GitHub](https://github.com/jaccen) | [AI-Copyright-Skill](https://git
 - [Earl000333/paperforge](https://github.com/Earl000333/paperforge) -- 论文→专利映射方法论
 - [hapi-ds/mPAPA](https://github.com/hapi-ds/mPAPA) -- 结构化多步工作流
 - [IGTA-Tech/provisional-patent-skills](https://github.com/IGTA-Tech/provisional-patent-skills) -- 100分制质量评分
+- [handsomestWei/patent-disclosure-skill](https://github.com/handsomestWei/patent-disclosure-skill) -- 国知局爬虫 + Mermaid附图生成 + 迭代追溯机制
+- [yycyyv/M-Cube](https://github.com/yycyyv/M-Cube) -- OA答复工作流 + 多模态附图分析 + 多验证
+- [RobThePCGuy/Claude-Patent-Creator](https://github.com/RobThePCGuy/Claude-Patent-Creator) -- 多源专利检索 + 合规检查架构
+- [kimlawtech/korean-patent-diagram](https://github.com/kimlawtech/korean-patent-diagram) -- 专利附图自动生成

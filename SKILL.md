@@ -1,9 +1,9 @@
 ---
 name: AI-Copyright-Skill
-description: "AI-native IP skill: generate patent applications, software copyright materials, or technical disclosures from AI project code/papers/docs, with direct Word and PPT output. Covers 7 AI domains, 11 claim templates, patentability check, desensitization, prior-art search, and self-check."
-version: "2.0.0"
+description: "AI-native IP skill: generate patent applications, software copyright materials, or technical disclosures from AI project code/papers/docs, with direct Word and PPT output. Covers 7 AI domains, 15 claim templates, patentability check, innovation mining, desensitization, prior-art search, and self-check."
+version: "3.0.0"
 author: jaccen
-tags: ["patent", "software-copyright", "ip", "ai", "intellectual-property", "docx", "pptx", "3d-vision", "generative-ai", "embodied-ai", "rag", "ai-watermark"]
+tags: ["patent", "software-copyright", "ip", "ai", "intellectual-property", "docx", "pptx", "3d-vision", "generative-ai", "embodied-ai", "rag", "ai-watermark", "world-model", "ssm", "video-generation", "agent", "ai4science", "patent-drafting", "oa-response", "prior-art", "cnipa"]
 ---
 
 # AI知识产权文件生成
@@ -14,7 +14,7 @@ tags: ["patent", "software-copyright", "ip", "ai", "intellectual-property", "doc
 - **软著路径**：软件著作权登记材料（说明书+源代码文档）
 - **交底书路径**：从论文/研究笔记生成技术交底书
 
-覆盖 **7大AI领域(感知智能/认知与语言/生成式AI/决策与交互/AI工程化/AI安全与治理/行业应用) 22细分方向**，11类权利要求模板。
+覆盖 **7大AI领域(感知智能/认知与语言/生成式AI/决策与交互/AI工程化/AI安全与治理/行业应用) 22+细分方向**，15类权利要求模板。内建2026版审查指南合规检查、AI伦理审查、创新挖掘策略与高频驳回应对知识库。
 
 ## 触发条件
 
@@ -25,24 +25,25 @@ tags: ["patent", "software-copyright", "ip", "ai", "intellectual-property", "doc
 ## 总体流程
 
 ```
-Phase 0  可专利性预判（仅专利路径）
+Phase 0  可专利性预判（仅专利路径）——含2026版AI伦理审查(§8.1)
 Phase A  需求诊断 → 路径+领域归属+风险等级
-Phase B  资料解读与项目识别 → 自动识别11类AI项目+6行业+提取技术要点
+Phase B  资料解读与项目识别 → 自动识别15+类AI项目+9行业+提取技术要点
 Phase C  生成（按路径分支）
-  C1 专利：查新→布局→交底书(含附图生成)→权利要求(11类模板)→说明书(附图嵌入)→摘要→自检
-  C2 软著：软件说明书(4套模板)→源代码文档→自检
-  C3 交底书：映射(通用6类+领域专用)→撰写→自检
+  C1 专利：创新挖掘(§9)→查新(多源工具链)→结构化对比→布局→交底书→权利要求(15类模板)→说明书(+附图)→摘要→自检
+  C2 软著：软件说明书(5套模板)→源代码文档→自检
+  C3 交底书：映射(通用6类+领域专用)→撰写(+附图)→自检
 Phase D  确认关卡
-Phase E  迭代修正
+Phase E  迭代修正（含驳回应对策略(§10)+OA答复完整工作流）
 Phase F  Word文档输出（docx-js，默认自动执行）
 Phase G  简介PPT输出（PptxGenJS工作流，专利路径默认）
+Phase H  专利附图自动生成（Mermaid/Graphviz→PNG，C1/C3默认）
 ```
 
 ## Phase 0 可专利性预判
 
-依据 `references/ai-patent-special.md` §1 检测三要素：技术问题（锚定具体场景）、技术手段（步骤与系统架构绑定）、技术效果（可量化）。
+依据 `references/ai-patent-special.md` §1 检测三要素：技术问题（锚定具体场景）、技术手段（步骤与系统架构绑定）、技术效果（可量化）。第一层增加专利法第五条伦理审查（数据采集/规则设置不得违反法律或社会公德），第三层增加模型结构/参数充分公开要求。
 
-领域风险判定（依据 §1.3）：8个高/中风险领域（生成式AI、金融风控、AI对齐、具身智能、强化学习、RAG、AIGC水印等）需应用领域专用撰写对策。
+领域风险判定（依据 §1.3）：13个高/中风险领域（生成式AI、金融风控、AI对齐、具身智能、强化学习、RAG、AIGC水印、世界模型、SSM、大模型推理优化、AI辅助发明、多Agent协作等）需应用领域专用撰写对策。
 
 判定：全过+低风险→继续；全过+高风险→继续但强制领域对策；技术手段不过→转交底书路径；技术效果不过→补充定量对比。
 
@@ -63,7 +64,7 @@ Phase G  简介PPT输出（PptxGenJS工作流，专利路径默认）
 
 ## Phase B 资料解读与项目识别
 
-B.1 自动识别（依据 `references/ai-software-copyright-guide.md` §1.1 决策树）：app.py→AI服务、train.py→训练、inference.py→推理、render.py/gaussian.py→3D视觉、diffusion.py→生成式AI、robot.py/vla.py→具身智能、pipeline.py+langchain→Agent、pipeline.py+rag→RAG、package.json→前端全栈。同时检测6行业特征（§1.3）。
+B.1 自动识别（依据 `references/ai-software-copyright-guide.md` §1.1 决策树）：app.py→AI服务、train.py→训练、inference.py→推理、render.py/gaussian.py→3D视觉、diffusion.py→生成式AI、robot.py/vla.py→具身智能、pipeline.py+langchain→Agent、pipeline.py+rag→RAG、package.json→前端全栈、world_model.py→世界模型/仿真、mamba.py→SSM、dit.py→扩散Transformer、agent.py→Agent框架、watermark.py→AI安全。同时检测9行业特征（§1.3）。
 
 B.2 技术要点提取：按优先级读取模型定义→训练/推理→渲染/生成/控制→论文→设计文档→README。形成技术要点清单（创新点/方案骨架/参数/区别/量化效果/领域归属）。
 
@@ -71,9 +72,30 @@ B.2 技术要点提取：按优先级读取模型定义→训练/推理→渲染
 
 ## Phase C1 专利申请文件
 
-C1.1 现有技术检索：联网搜索2-3轮，范围含国知局/Google Patents/arXiv，建议CPC分类（§6）。
+C1.0 创新挖掘（`references/ai-patent-special.md` §9）：对每个AI项目，从架构/训练/工程/场景/系统五维框架系统挖掘创新点。通过创新点深度检查表（问题唯一性→方案独特性→效果可量化→可实施性→保护宽度→多维度布局）提升专利创造性。
 
-C1.2 布局建议（§2）：单件/分案/3件系列/具身2件，等用户确认。
+C1.1 现有技术检索（多源工具链，依据 `references/ai-prior-art-search.md`）：
+
+**数据源优先级**：
+1. 国知局公布公告站（`epub.cnipa.gov.cn`）— 中国专利精准查新，使用 `tools/cnipa_search.py` 定向爬取（需 Playwright + Chromium；不可用时降级为 WebSearch）
+2. Google Patents — 全球专利全文检索，使用 `tools/google_patents_search.py`（需 Google API Key；不可用时降级为 WebSearch）
+3. arXiv / Semantic Scholar — 学术论文查新
+4. 通用 WebSearch — 降级兜底
+
+**检索策略**：按领域生成关键词+CPC分类号(§6)组合搜索，每源2-3轮，共5-8轮。
+
+C1.1b 现有技术结构化对比分析（`references/ai-prior-art-search.md` §2）：
+输出**特征对比表**，如下结构：
+
+| 对比项 | 本申请 | 现有技术1 | 现有技术2 | 区别特征 | 风险等级 |
+|--------|--------|-----------|-----------|----------|----------|
+| 技术问题 | ... | ... | ... | ... | 低/中/高 |
+| 核心技术手段 | ... | ... | ... | ... | 低/中/高 |
+| 关键技术效果 | ... | ... | ... | ... | 低/中/高 |
+
+风险等级判定：低=完全区分/中=需从属权利要求进一步限定/高=需修改独立权利要求特征。低风险直接继续；中风险在从属权利要求中增加区分特征；高风险需修改独立权利要求后再评估。
+
+C1.2 布局建议（§2+§9.3跨领域组合策略）：单件/分案/3件系列/具身2件/世界模型+仿真2件/Agent+工具链2件，等用户确认。
 
 C1.3 技术交底书（中间产物，按模板 `template/demo-20260519.docx` 格式输出）
 
@@ -248,13 +270,34 @@ plt.savefig('.temp/{案件名}/figures/{案件名}_fig{N}_{描述}.png', dpi=200
 
 ---
 
-C1.4 权利要求书（`references/ai-patent-claims-guide.md`）：方法+系统+介质三件套，11类模板按领域适配（2.1模型架构/2.2 3D视觉/2.3训练/2.4多模态/2.5 RAG/2.6扩散模型/2.7 Agent/2.8具身智能/2.9推理优化/2.10数据处理/2.11 AI水印）。领域特殊要求：3D视觉需四段式+渲染公式；生成式AI需条件注入步骤；具身智能需绑定传感器+执行器；RAG需完整技术链路；AI水印需注入层/位置/编码。从属权利要求：通用5层递进+领域专用展开（§3.2）。
+C1.4 权利要求书（`references/ai-patent-claims-guide.md`）：方法+系统+介质三件套，15类模板按领域适配（2.1模型架构/2.2 3D视觉/2.3训练/2.4多模态/2.5 RAG/2.6扩散模型/2.7 Agent/2.8具身智能/2.9推理优化/2.10数据处理/2.11 AI水印/2.12世界模型/2.13 SSM/2.14视频生成/2.15 AI原生应用）。领域特殊要求：3D视觉需四段式+渲染公式；生成式AI需条件注入步骤；具身智能需绑定传感器+执行器；RAG需完整技术链路；AI水印需注入层/位置/编码；世界模型需绑定物理约束+仿真场景；SSM需绑定状态转移矩阵+门控机制与系统组件；视频生成需3D VAE+时空一致性；AI原生应用需行业知识增强+合规机制。从属权利要求：通用5层递进+领域专用展开（§3.2），含创新性撰写深度策略（§3.4创新密度最大化/梯度设计/创造性论证/场景迁移/多件协同布局）。
 
-C1.5 说明书撰写（逐章详细指引，结构对应 C1.3.1-C1.3.8）
+
+C1.5 说明书：五章结构（技术领域→背景→发明内容→附图→实施方式）。2026版新增充分公开要求（§8.3）：模型类需公开模块/层级/连接关系/训练参数；应用类需公开模型-场景结合方式/输入输出关联关系。脱敏规则（§5）：6类通用+14行业+4项3D专项。附图（§4）：13类AI系统必备附图，**按Phase H自动生成Mermaid图嵌入说明书**。术语规范（§12）：禁止"大约/左右"、替换商业术语、保持实现无关性。
+说明书撰写（逐章详细指引，每章不可跳过）
+
+按 C1.5.1-C1.5.8 逐章撰写说明书正文。
+
+C1.5.1 术语解释：定义本发明涉及的关键技术术语，每个术语给出在本发明语境下的明确含义。至少列出3-5个核心术语（如模型名称、算法名称、数据表示名称、评估指标名称、领域专有名词），每个术语2-4句话说明其在发明中的具体指代。禁止照搬教科书定义，必须与发明内容直接关联，确保审查员和本领域技术人员能通过术语解释无歧义地理解发明内容。
+
+C1.5.2 技术领域：明确本发明属于哪个技术领域（精确到CPC/IPC子类），阐述具体要解决的技术问题。技术问题必须锚定具体技术场景（如"三维场景重建中实时渲染的显存瓶颈"），不可使用"效率低""精度差"等抽象表述。
+
+C1.5.3 背景技术：详细介绍技术背景，以因果关系推理的方式推导，阐述有关现有技术及其缺陷。至少引用2-3项现有技术方案（来自C1.1检索结果），逐一分析其不足。针对这些缺点，以"本发明的目的在于..."句式明确说明本发明要解决的问题。
+
+C1.5.4 发明内容：详细描述本发明的技术方案，包括技术原理、实现方式等。需与C1.4权利要求书严格对应，用自然语言展开权利要求中的每个步骤。必须结合流程图、原理框图、电路图、时序图进行说明（引用C1.5.6附图的图号）。技术方案描述需覆盖所有权要求中的全部技术特征。
+
+C1.5.5 附图说明：提供必要的附图以辅助说明发明内容。每张附图需有图号和图题，附图之间按技术流程逻辑排列。引用 references/ai-patent-special.md §4 中对应AI系统类型的必要附图清单，确保不遗漏。
+
+C1.5.6 具体实施方式：具体说明发明的实施例，包括操作步骤、参数设置、具体数值范围等。至少给出2个实施例（优选实施例+替代实施例），每个实施例需覆盖独立权利要求的全部步骤。参数用范围而非绝对值（如"学习率取0.0001至0.01之间"）。需达到本领域技术人员可复现的详细程度。
+
+C1.5.7 关键点和欲保护点：简要概述本发明的创新之处。列出3-5个核心创新点，每个创新点对应一项独立权利要求的保护范围。说明技术优势和应用前景，基于实验数据而非主观判断。
+
+C1.5.8 优点推理：用推理方式推导出本发明的优点。结合发明内容简要介绍，逐一对应C1.5.2中提出的技术问题或发明目的来描述。以"相比现有技术，本发明..."开头，一至两个自然段，基于技术方案的客观因果推理而非主观断言。
 
 说明书正文章节结构与交底书各章一一对应，撰写要求保持一致。脱敏规则（references/ai-patent-special.md §5）：6类通用+14行业+4项3D专项。附图（§4）：13类AI系统必备附图。
 
 说明书与交底书的差异：说明书面向专利局审查员，需更加正式和完整，每个章节需在交底书内容基础上进一步扩充技术细节和实施例。交底书中撰写的术语解释、技术领域、背景技术、发明内容、附图说明、实施方式、关键点、优点推理、替代方案，在说明书中均需保留并深化。
+
 
 C1.6 摘要：300字内，技术领域+核心方案+技术效果。
 
@@ -264,9 +307,9 @@ C1.7 量化自检（100分制）：完整特征15+回引10+三件套10+充分公
 
 （`references/ai-software-copyright-guide.md`）
 
-C2.1 说明书（10-15页，截图≥6张）：4套模板按项目类型选用——3.1通用/3.2 3D视觉/3.3生成式AI/3.4具身智能。面向审查员避免行话，需人机交互描述，开源权重声明不在保护范围。
+C2.1 说明书（10-15页，截图≥6张）：5套模板按项目类型选用——3.1通用/3.2 3D视觉/3.3生成式AI/3.4具身智能/3.5世界模型/仿真。面向审查员避免行话，需人机交互描述，开源权重声明不在保护范围。2026版新增：涉及个人数据的AI软件需增加隐私合规声明（§8.1）。
 
-C2.2 源代码文档（前30+后30页，每页≥50行）：12级源文件优先级（§2.1），3D视觉类必选render.py、生成式AI类必选generate.py、具身智能类必选control.py、RAG类必选retriever.py。脱敏清单（§2.2）：删API Key/绝对路径/内网/邮箱/硬件型号/云服务URL。
+C2.2 源代码文档（前30+后30页，每页≥50行）：16级源文件优先级（§2.1），3D视觉类必选render.py、生成式AI类必选generate.py、具身智能类必选control.py、RAG类必选retriever.py、世界模型类必选world_model.py、Agent类必选agent.py、AI安全类必选watermark.py、AI4Science类必选molecular.py。脱敏清单（§2.2）：删API Key/绝对路径/内网/邮箱/硬件型号/云服务URL。
 
 C2.3 量化自检：页数15+截图10+功能覆盖15+非技术描述10+GPU信息10+代码页数15+每页行数10+一致性5+无泄露10。
 
@@ -284,9 +327,92 @@ C3.3 量化自检：场景锚定15+可实施20+量化对比15+区别清晰15+附
 
 ## Phase E 迭代修正
 
-识别→定位→定向修正→差异标注(`<!-- 修订 -->`)→另存v{N}→重跑自检。禁止重跑完整流水线。
+E.1 基础迭代：识别→定位→定向修正→差异标注(`<!-- 修订 -->`)→另存v{N}→重跑自检。禁止重跑完整流水线。
 
-## Phase G 简介PPT输出
+E.2 迭代追溯机制（MANDATORY）：
+- 交付物命名：`{案件名}_{YYYYMMDDHHmmss}.md` 与同名 `.docx`
+- 修订对话记录：`outputs/{案件标识}/{案件名}_修订记录.md`，逐条追加格式如下：
+
+```markdown
+## 迭代 v{N} | {YYYY-MM-DD HH:mm}
+
+### 用户指令
+{用户原始修改要求}
+
+### 修正内容
+- [段落定位] {原内容摘要} → {修改后摘要}
+- ...
+
+### 自检结果
+{自检分数及扣分项}
+
+---
+```
+
+E.3 OA答复工作流（`references/ai-patent-special.md` §10 展开执行）：
+
+```
+Step 1  审查意见解析 → 识别驳回类型（§10十大驳回模式）、引用对比文件
+Step 2  对比文件分析 → 提取对比文件技术特征，与本申请结构化对比(复用C1.1b对比表)
+Step 3  修改策略选择 → 从以下策略中选择并组合：
+  a) 权利要求修改（合并从属特征/删限/缩限/新增从属/重写前序）
+  b) 说明书适应性修改
+  c) 仅意见陈述不修改
+Step 4  A33合规检查 → 每项修改必须在原说明书中有直接/毫无疑义地依据
+  - 合规：修改可追溯到原文具体段落 → 继续
+  - 不合规：修改超出原申请文件记载范围 → 撤回修改，换策略
+Step 5  意见陈述书撰写 → 论证创造性/新颖性/区别技术特征非显而易见
+Step 6  替换页生成 → 仅生成修改涉及的替换页，标注修改位置
+```
+
+OA答复产出：`{案件名}_OA答复_{审查意见通知书编号}.docx`（意见陈述书+替换页）。
+
+## Phase H 专利附图自动生成
+
+专利路径（C1）和交底书路径（C3）默认执行。
+
+### H.1 图表类型与内容映射（依据 `references/ai-patent-special.md` §4 的13类附图）
+
+| 附图类型 | 适用领域 | Mermaid语法 | 内容来源 |
+|----------|----------|-------------|----------|
+| 系统架构图 | 通用 | `graph TB` | C1.4权利要求·系统项 |
+| 方法流程图 | 通用 | `flowchart TD` | C1.4权利要求·方法项步骤 |
+| 数据处理流程 | RAG/Agent | `flowchart LR` | C1.4权利要求·数据处理 |
+| 模型结构图 | 3D视觉/扩散/SSM | `graph TB` (多层) | C1.4权利要求·模型架构 |
+| 训练流程图 | 训练方法 | `flowchart TD` | C1.5说明书·训练实施例 |
+| 推理流程图 | 推理优化 | `flowchart TD` | C1.5说明书·推理部署 |
+| 人机交互流程 | Agent/具身 | `sequenceDiagram` | C1.5说明书·交互流程 |
+| 仿真环境架构 | 世界模型 | `graph TB` | C1.5说明书·仿真场景 |
+| 水印嵌入位置 | AI水印 | `graph TB` (层级) | C1.4权利要求·注入层 |
+
+### H.2 渲染方式（三选一，按环境可用性自动选择）
+
+**优先级1：Mermaid CLI（mmdc）** — Node.js，推荐
+```bash
+# 安装（一次性）
+npm install -g @mermaid-js/mermaid-cli
+
+# 渲染
+mmdc -i {案件名}_图X.mmd -o outputs/{案件标识}/patent/{案件名}_figX.png -w 1200 -b white
+```
+
+**优先级2：Graphviz（dot）** — 系统包
+```bash
+dot -Tpng {案件名}_图X.dot -o outputs/{案件标识}/patent/{案件名}_figX.png -Gdpi=300
+```
+
+**优先级3：Python playwright截图** — 内建备选
+```python
+import subprocess
+subprocess.run(["npx", "-y", "mermaid-cli", "-i", input_mmd, "-o", output_png])
+```
+
+### H.3 生成规范
+- 每张图须包含附图标记（图1、图2...）和简要文字说明
+- 输出目录：`outputs/{案件标识}/patent/figures/`
+- 图片格式：PNG, 300 DPI, 白色背景, 宽度≥1200px
+- 说明书附图说明书中引用格式："如图X所示，..."
+- Mermaid代码同时保存为 `.mmd` 文件，便于后续修改
 
 专利路径默认执行，其他路径`--ppt`触发。
 
@@ -573,10 +699,25 @@ const figureParagraphs = figureFiles.map((file, idx) => {
 
 ```
 outputs/{案件标识}/
-├── patent/     {案件名}_disclosure.docx + {案件名}.docx + _简介.pptx + .md中间文件
-├── software-copyright/  {软件名}_manual.docx + _source_code.docx + .md中间文件
-└── disclosure/ {案件名}_disclosure.docx + .md
+├── patent/
+│   ├── figures/             专利附图PNG (.mmd源文件同目录)
+│   ├── {案件名}_{时间戳}_disclosure.docx    技术交底书
+│   ├── {案件名}_{时间戳}.docx              正式专利文件
+│   ├── {案件名}_简介.pptx                  管理层汇报PPT
+│   ├── {案件名}_修订记录.md                迭代追溯记录
+│   ├── {案件名}_prior_art_comparison.md    现有技术对比表
+│   └── .md中间文件
+├── software-copyright/
+│   ├── {软件名}_{时间戳}_manual.docx
+│   ├── {软件名}_{时间戳}_source_code.docx
+│   └── .md中间文件
+└── disclosure/
+    ├── {案件名}_{时间戳}_disclosure.docx
+    ├── figures/             交底书附图PNG
+    └── .md
 ```
+
+时间戳格式：`YYYYMMDDHHmmss`（如 `20260521143000`）。
 
 禁止：skill名/仓库路径/自检清单/虚构专利号/"大约""左右"/商业术语。
 
@@ -584,6 +725,9 @@ outputs/{案件标识}/
 
 | 参考文件 | 内容 |
 |----------|------|
-| `references/ai-patent-special.md` | §1可专利性+8领域风险 §2布局(含3D/具身) §3 6类+10领域映射 §4 13类附图 §5 6+14+4脱敏 §6 6组CPC §7速查 |
-| `references/ai-patent-claims-guide.md` | §1三件套 §2 11类模板 §3 5层+5领域从属展开 |
-| `references/ai-software-copyright-guide.md` | §1 11类+6行业检测 §2 12级优先级+脱敏 §3 4套模板 §4 10避坑 |
+| `references/ai-patent-special.md` | §1可专利性+13领域风险(含2026版伦理审查) §2布局(含3D/具身/世界模型) §3 6类+10领域映射 §4 13类附图 §5 6+14+4脱敏 §6 6组CPC §7速查 §8 2026版审查指南AI专项(伦理/创造性/充分公开/发明人) §9创新挖掘五维框架+深度检查表 §10十大驳回模式+OA答复 §11七大领域算法知识深化 §12术语规范 §13 PCT国际申请 §14 EPO/USPTO差异化要点 |
+| `references/ai-patent-claims-guide.md` | §1三件套 §2 15类模板(含世界模型/SSM/视频生成/AI原生应用) §3 5层+9领域从属展开+创新性撰写深度策略 |
+| `references/ai-software-copyright-guide.md` | §1 15+类+9行业检测(含世界模型/SSM/Agent/AI4Science/能源/农业) §2 16级优先级+脱敏 §3 5套模板(含世界模型/仿真) §4 14避坑 |
+| `references/ai-prior-art-search.md` | §1 多源查新工具链(CNIPA爬虫/Google Patents/学术源/降级策略) §2 结构化特征对比表+风险分级 §3 查新报告输出规范 |
+| `tools/cnipa_search.py` | 国知局公布公告站(epub.cnipa.gov.cn)定向检索脚本(Playwright) |
+| `tools/google_patents_search.py` | Google Patents API集成脚本 |
